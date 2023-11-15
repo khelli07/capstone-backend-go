@@ -2,6 +2,7 @@ package main
 
 import (
 	"backend-go/database"
+	handlers "backend-go/handlers/user"
 	"backend-go/utils"
 	"net/http"
 
@@ -24,6 +25,11 @@ func main() {
 			"message": "API is up and running!",
 		})
 	})
+
+	auth := router.Group("/auth")
+	{
+		auth.POST("/register", handlers.Register)
+	}
 
 	router.Run(":9999")
 }
