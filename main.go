@@ -5,6 +5,7 @@ import (
 	handlers "backend-go/handlers/user"
 	"backend-go/utils"
 	"net/http"
+	"os"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -29,7 +30,8 @@ func main() {
 	auth := router.Group("/auth")
 	{
 		auth.POST("/register", handlers.Register)
+		auth.POST("/login", handlers.Login)
 	}
 
-	router.Run(":9999")
+	router.Run(":" + os.Getenv("PORT"))
 }
