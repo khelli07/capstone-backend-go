@@ -8,3 +8,9 @@ type User struct {
 	Email    string `gorm:"uniqueIndex" json:"email"`
 	Password string
 }
+
+type PublicUser struct {
+	ID    uint   `json:"id"`
+	Name  string `json:"name"`
+	Email string `json:"email"`
+}

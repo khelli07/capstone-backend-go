@@ -25,7 +25,7 @@ func Login(c *gin.Context) {
 	}
 
 	var user models.User
-	database.DB.Model(models.User{Email: body.Email}).First(&user)
+	database.DB.Where("email = ?", body.Email).First(&user)
 
 	if user.ID == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -45,7 +45,6 @@ func Login(c *gin.Context) {
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"id":      user.ID,
-		"name":    user.Name,
 		"expires": time.Now().Add(time.Hour * 24 * 7).Unix(),
 	})
 

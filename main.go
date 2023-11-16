@@ -3,6 +3,8 @@ package main
 import (
 	"backend-go/database"
 	handlers "backend-go/handlers/user"
+	"backend-go/middlewares"
+	"backend-go/models"
 	"backend-go/utils"
 	"net/http"
 	"os"
@@ -29,6 +31,12 @@ func main() {
 
 	auth := router.Group("/auth")
 	{
+		auth.GET("/", middlewares.RequireAuth, func(c *gin.Context) {
+			c.JSON(http.StatusOK, gin.H{
+				"message": "You are authenticated!",
+				"user":    c.MustGet("user").(models.PublicUser),
+			})
+		})
 		auth.POST("/register", handlers.Register)
 		auth.POST("/login", handlers.Login)
 	}
