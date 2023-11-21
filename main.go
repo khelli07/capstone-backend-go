@@ -9,8 +9,13 @@ import (
 	"net/http"
 	"os"
 
+	_ "backend-go/docs"
+
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 func init() {
@@ -19,9 +24,20 @@ func init() {
 	database.Migrate()
 }
 
+// @title           Match-Event Backend API
+// @version         1.0
+// @description     A matchmaking service API in Go using Gin framework.
+
+// @license.name  Apache 2.0
+// @license.url   http://www.apache.org/licenses/LICENSE-2.0.html
+
+// @host      localhost:9999
+// @BasePath  /
 func main() {
 	router := gin.Default()
 	router.Use(cors.Default())
+
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler)) // http://[HOST_URL]/swagger/index.html
 
 	router.GET("/", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
