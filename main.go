@@ -1,13 +1,16 @@
 package main
 
 import (
-	"backend-go/database"
-	handlers "backend-go/handlers/user"
+	"backend-go/ds"
+	"backend-go/handlers/events"
+	"backend-go/handlers/users"
 	"backend-go/middlewares"
 	"backend-go/models"
 	"backend-go/utils"
 	"net/http"
 	"os"
+
+	_ "cloud.google.com/go/datastore"
 
 	_ "backend-go/docs"
 
@@ -20,8 +23,7 @@ import (
 
 func init() {
 	utils.LoadEnv()
-	database.Connect()
-	database.Migrate()
+	ds.InitClient()
 }
 
 // @title           Match-Event Backend API
@@ -50,11 +52,18 @@ func main() {
 		auth.GET("/", middlewares.RequireAuth, func(c *gin.Context) {
 			c.JSON(http.StatusOK, gin.H{
 				"message": "You are authenticated!",
-				"user":    c.MustGet("user").(models.PublicUser),
+				"user":    c.MustGet("user").(models.TokenUser),
 			})
 		})
-		auth.POST("/register", handlers.Register)
-		auth.POST("/login", handlers.Login)
+		auth.POST("/register", users.Register)
+		auth.POST("/login", users.Login)
+	}
+
+	event := router.Group("/event")
+	{
+		event.GET("/:id", events.GetEventById)
+		event.POST("/", events.CreateEvent)
+
 	}
 
 	router.Run(":" + os.Getenv("PORT"))

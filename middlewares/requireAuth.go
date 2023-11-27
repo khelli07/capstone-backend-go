@@ -1,8 +1,9 @@
 package middlewares
 
 import (
-	"backend-go/database"
+	"backend-go/ds"
 	"backend-go/models"
+	"backend-go/repository"
 	"fmt"
 	"net/http"
 	"os"
@@ -43,16 +44,21 @@ func RequireAuth(c *gin.Context) {
 			c.AbortWithStatus(http.StatusBadRequest)
 		}
 
-		var user models.PublicUser
-		database.DB.Model(&models.User{}).Select("id, name, email").Where("id = ?", claims["id"]).First(&user)
-		c.Set("user", user)
-
-		if user.ID == 0 {
-			c.JSON(http.StatusBadRequest, gin.H{
-				"message": "User not found",
-			})
-			c.AbortWithStatus(http.StatusBadRequest)
+		user, err := repository.GetUserById(ds.CTX, ds.Client, int64(claims["id"].(float64)))
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"code": http.StatusInternalServerError, "message": err.Error()})
+			c.AbortWithStatus(http.StatusInternalServerError)
+			return
 		}
+
+		var tokenUser models.TokenUser
+		tokenUser = models.TokenUser{
+			ID:       int64(claims["id"].(float64)),
+			Username: user.Username,
+			Email:    user.Email,
+		}
+
+		c.Set("user", tokenUser)
 		c.Next()
 	} else {
 		c.JSON(http.StatusBadRequest, gin.H{
