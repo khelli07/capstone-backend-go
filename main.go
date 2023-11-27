@@ -2,12 +2,16 @@ package main
 
 import (
 	"backend-go/database"
-	handlers "backend-go/handlers/user"
+	"backend-go/ds"
+	"backend-go/handlers/events"
+	"backend-go/handlers/users"
 	"backend-go/middlewares"
 	"backend-go/models"
 	"backend-go/utils"
 	"net/http"
 	"os"
+
+	_ "cloud.google.com/go/datastore"
 
 	_ "backend-go/docs"
 
@@ -22,6 +26,7 @@ func init() {
 	utils.LoadEnv()
 	database.Connect()
 	database.Migrate()
+	ds.InitClient()
 }
 
 // @title           Match-Event Backend API
@@ -53,8 +58,15 @@ func main() {
 				"user":    c.MustGet("user").(models.PublicUser),
 			})
 		})
-		auth.POST("/register", handlers.Register)
-		auth.POST("/login", handlers.Login)
+		auth.POST("/register", users.Register)
+		auth.POST("/login", users.Login)
+	}
+
+	event := router.Group("/event")
+	{
+		event.GET("/:id", events.GetEventById)
+		event.POST("/", events.CreateEvent)
+
 	}
 
 	router.Run(":" + os.Getenv("PORT"))
