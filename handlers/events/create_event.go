@@ -16,7 +16,7 @@ func CreateEvent(c *gin.Context) {
 		return
 	}
 
-	key, err := repository.CreateEvent(ds.CTX, ds.DS, &event)
+	key, err := repository.CreateEvent(ds.CTX, ds.Client, &event)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"code": http.StatusInternalServerError, "message": err.Error()})
 		return

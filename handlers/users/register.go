@@ -1,19 +1,22 @@
 package users
 
 import (
-	"backend-go/database"
+	"backend-go/ds"
 	"backend-go/models"
+	"backend-go/repository"
 	"net/http"
 
+	"cloud.google.com/go/datastore"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
 )
 
 func Register(c *gin.Context) {
 	var body struct {
-		Name     string
-		Email    string
-		Password string
+		Username  string
+		Email     string
+		Password  string
+		Password2 string
 	}
 
 	if c.Bind(&body) != nil {
@@ -23,8 +26,25 @@ func Register(c *gin.Context) {
 		return
 	}
 
-	hash, err := bcrypt.GenerateFromPassword([]byte(body.Password), bcrypt.DefaultCost)
+	if body.Password != body.Password2 {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Password mismatch",
+		})
+		return
+	}
 
+	key, err := repository.GetUserByEmail(ds.CTX, ds.Client, body.Email)
+	if key != nil && err == nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Email has been taken!",
+		})
+		return
+	} else if err != nil && err != datastore.ErrNoSuchEntity {
+		c.JSON(http.StatusInternalServerError, gin.H{"code": http.StatusInternalServerError, "message": err.Error()})
+		return
+	}
+
+	hash, err := bcrypt.GenerateFromPassword([]byte(body.Password), bcrypt.DefaultCost)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "Failed to hash password",
@@ -33,16 +53,14 @@ func Register(c *gin.Context) {
 	}
 
 	user := models.User{
-		Name:     body.Name,
+		Username: body.Username,
 		Email:    body.Email,
 		Password: string(hash),
 	}
-	result := database.DB.Create(&user)
+	_, err = repository.CreateUser(ds.CTX, ds.Client, &user)
 
-	if result.Error != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": "Failed to create user",
-		})
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"code": http.StatusInternalServerError, "message": err.Error()})
 		return
 	}
 

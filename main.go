@@ -1,7 +1,6 @@
 package main
 
 import (
-	"backend-go/database"
 	"backend-go/ds"
 	"backend-go/handlers/events"
 	"backend-go/handlers/users"
@@ -24,8 +23,6 @@ import (
 
 func init() {
 	utils.LoadEnv()
-	database.Connect()
-	database.Migrate()
 	ds.InitClient()
 }
 
@@ -55,7 +52,7 @@ func main() {
 		auth.GET("/", middlewares.RequireAuth, func(c *gin.Context) {
 			c.JSON(http.StatusOK, gin.H{
 				"message": "You are authenticated!",
-				"user":    c.MustGet("user").(models.PublicUser),
+				"user":    c.MustGet("user").(models.TokenUser),
 			})
 		})
 		auth.POST("/register", users.Register)

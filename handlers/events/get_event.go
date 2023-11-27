@@ -17,7 +17,7 @@ func GetEventById(c *gin.Context) {
 		return
 	}
 
-	entity, err := repository.GetEventById(ds.CTX, ds.DS, int64(id))
+	entity, err := repository.GetEventById(ds.CTX, ds.Client, int64(id))
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"code": http.StatusInternalServerError, "message": err.Error()})
 		return

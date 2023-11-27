@@ -18,14 +18,14 @@ func CreateEvent(ctx context.Context, client *datastore.Client, event *models.Ev
 }
 
 func GetEventById(ctx context.Context, client *datastore.Client, id int64) (models.Event, error) {
-	var task models.Event
-	taskKey := datastore.IDKey("Event", id, nil)
-	err := client.Get(ctx, taskKey, &task)
+	var event models.Event
+	eventKey := datastore.IDKey("Event", id, nil)
+	err := client.Get(ctx, eventKey, &event)
 	if err != nil {
 		return models.Event{}, errors.Wrap(err, "Failed to get datastore entity")
 	}
 
-	return task, nil
+	return event, nil
 }
 
 func DeleteEvent(ctx context.Context, client *datastore.Client, id int64) error {

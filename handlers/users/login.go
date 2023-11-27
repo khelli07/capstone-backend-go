@@ -1,8 +1,8 @@
 package users
 
 import (
-	"backend-go/database"
-	"backend-go/models"
+	"backend-go/ds"
+	"backend-go/repository"
 	"net/http"
 	"os"
 	"time"
@@ -24,18 +24,18 @@ func Login(c *gin.Context) {
 		})
 	}
 
-	var user models.User
-	database.DB.Where("email = ?", body.Email).First(&user)
-
-	if user.ID == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "User not found",
-		})
+	key, err := repository.GetUserByEmail(ds.CTX, ds.Client, body.Email)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"code": http.StatusInternalServerError, "message": err.Error()})
+		return
+	}
+	user, err := repository.GetUserById(ds.CTX, ds.Client, key.ID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"code": http.StatusInternalServerError, "message": err.Error()})
 		return
 	}
 
-	err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(body.Password))
-
+	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(body.Password))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "Email and password mismatch",
@@ -44,7 +44,7 @@ func Login(c *gin.Context) {
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"id":      user.ID,
+		"id":      key.ID,
 		"expires": time.Now().Add(time.Hour * 24 * 7).Unix(),
 	})
 

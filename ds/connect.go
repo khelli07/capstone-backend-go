@@ -9,13 +9,13 @@ import (
 	"github.com/pkg/errors"
 )
 
-var DS *datastore.Client
+var Client *datastore.Client
 var CTX context.Context
 
 func InitClient() {
 	var err error
 	CTX = context.Background()
-	DS, err = createClient(CTX)
+	Client, err = createClient(CTX)
 
 	if err != nil {
 		log.Fatalf("Error creating datastore client: %v", err)
