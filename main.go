@@ -1,7 +1,7 @@
 package main
 
 import (
-	"backend-go/ds"
+	"backend-go/fs"
 	"backend-go/handlers/events"
 	"backend-go/handlers/users"
 	"backend-go/middlewares"
@@ -23,7 +23,7 @@ import (
 
 func init() {
 	utils.LoadEnv()
-	ds.InitClient()
+	fs.InitClient()
 }
 
 // @title           Match-Event Backend API

@@ -16,13 +16,13 @@ func (u *User) BeforeUpdate() {
 
 type User struct {
 	Timestamps
-	Username string `datastore:"username" json:"username"`
-	Email    string `datastore:"email" json:"email"`
-	Password string `datastore:"password" json:"password"`
+	Username string `firestore:"username" json:"username"`
+	Email    string `firestore:"email" json:"email"`
+	Password string `firestore:"password" json:"password"`
 }
 
 type TokenUser struct {
-	ID       int64  `json:"id"`
+	ID       string `json:"id"`
 	Username string `json:"username"`
 	Email    string `json:"email"`
 }

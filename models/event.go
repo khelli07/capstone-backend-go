@@ -16,7 +16,7 @@ func (u *Event) BeforeUpdate() {
 
 type Event struct {
 	Timestamps
-	Name        string `datastore:"name"`
-	Category    string `datastore:"category"`
-	Description string `datastore:",noindex"`
+	Name        string `firestore:"name"`
+	Category    string `firestore:"category"`
+	Description string `firestore:"description"`
 }

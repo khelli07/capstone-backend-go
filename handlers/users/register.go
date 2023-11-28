@@ -1,12 +1,12 @@
 package users
 
 import (
-	"backend-go/ds"
+	"backend-go/fs"
 	"backend-go/models"
 	"backend-go/repository"
+	"fmt"
 	"net/http"
 
-	"cloud.google.com/go/datastore"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -33,13 +33,14 @@ func Register(c *gin.Context) {
 		return
 	}
 
-	key, err := repository.GetUserByEmail(ds.CTX, ds.Client, body.Email)
-	if key != nil && err == nil {
+	doc, err := repository.GetUserByEmail(fs.CTX, fs.FSClient, body.Email)
+	fmt.Println(doc)
+	if doc != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "Email has been taken!",
 		})
 		return
-	} else if err != nil && err != datastore.ErrNoSuchEntity {
+	} else if err != nil && err.Error() != "User not found" {
 		c.JSON(http.StatusInternalServerError, gin.H{"code": http.StatusInternalServerError, "message": err.Error()})
 		return
 	}
@@ -57,7 +58,7 @@ func Register(c *gin.Context) {
 		Email:    body.Email,
 		Password: string(hash),
 	}
-	_, err = repository.CreateUser(ds.CTX, ds.Client, &user)
+	_, err = repository.CreateUser(fs.CTX, fs.FSClient, &user)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"code": http.StatusInternalServerError, "message": err.Error()})
