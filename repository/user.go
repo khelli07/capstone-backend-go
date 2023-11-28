@@ -3,44 +3,47 @@ package repository
 import (
 	"backend-go/models"
 	"context"
-	"fmt"
 
-	"cloud.google.com/go/datastore"
+	"cloud.google.com/go/firestore"
 	"github.com/pkg/errors"
+	"google.golang.org/api/iterator"
 )
 
-func CreateUser(ctx context.Context, client *datastore.Client, user *models.User) (*datastore.Key, error) {
-	incompleteKey := datastore.IncompleteKey("User", nil)
-	key, err := client.Put(ctx, incompleteKey, user)
+func CreateUser(ctx context.Context, client *firestore.Client, user *models.User) (*firestore.DocumentRef, error) {
+	col := client.Collection("User")
+	docRef, _, err := col.Add(ctx, user)
 	if err != nil {
-		return nil, errors.Wrap(err, "Failed to create datastore entity")
+		return nil, errors.Wrap(err, "Failed to create firestore entity")
 	}
-	return key, nil
+
+	return docRef, nil
 }
 
-func GetUserByEmail(ctx context.Context, client *datastore.Client, email string) (*datastore.Key, error) {
-	var users []models.User
-	query := datastore.NewQuery("User").FilterField("email", "=", email).Order("-created_at")
-	keys, err := client.GetAll(ctx, query, &users)
+func GetUserByEmail(ctx context.Context, client *firestore.Client, email string) (*firestore.DocumentRef, error) {
+	col := client.Collection("User")
+	query := col.Where("email", "==", email).OrderBy("created_at", firestore.Desc).Limit(1)
 
-	if err != nil {
-		fmt.Println("Error querying datastore:", err)
-		return nil, err
+	iter := query.Documents(ctx)
+	doc, err := iter.Next()
+
+	if doc == nil && err == iterator.Done {
+		return nil, errors.New("User not found")
+	} else if err != nil {
+		return nil, errors.Wrap(err, "Error querying firestore")
 	}
 
-	if len(keys) == 0 {
-		return nil, datastore.ErrNoSuchEntity
-	}
-
-	return keys[0], nil
+	return doc.Ref, nil
 }
 
-func GetUserById(ctx context.Context, client *datastore.Client, id int64) (models.User, error) {
+func GetUserById(ctx context.Context, client *firestore.Client, id string) (models.User, error) {
 	var user models.User
-	userKey := datastore.IDKey("User", id, nil)
-	err := client.Get(ctx, userKey, &user)
+	col := client.Collection("User").Doc(id)
+	snapshot, err := col.Get(ctx)
 	if err != nil {
-		return models.User{}, errors.Wrap(err, "Failed to get datastore entity")
+		return user, errors.Wrap(err, "Failed to get firestore entity")
+	}
+	if err := snapshot.DataTo(&user); err != nil {
+		return user, errors.Wrap(err, "Failed to convert firestore entity")
 	}
 
 	return user, nil

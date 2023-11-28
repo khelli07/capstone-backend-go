@@ -1,7 +1,7 @@
 package events
 
 import (
-	"backend-go/ds"
+	"backend-go/fs"
 	"backend-go/models"
 	"backend-go/repository"
 	"net/http"
@@ -16,10 +16,10 @@ func CreateEvent(c *gin.Context) {
 		return
 	}
 
-	key, err := repository.CreateEvent(ds.CTX, ds.Client, &event)
+	result, err := repository.CreateEvent(fs.CTX, fs.FSClient, &event)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"code": http.StatusInternalServerError, "message": err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"id": key.ID, "name": key.Name})
+	c.JSON(http.StatusOK, gin.H{"id": result.ID})
 }

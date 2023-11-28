@@ -4,36 +4,29 @@ import (
 	"backend-go/models"
 	"context"
 
-	"cloud.google.com/go/datastore"
+	"cloud.google.com/go/firestore"
 	"github.com/pkg/errors"
 )
 
-func CreateEvent(ctx context.Context, client *datastore.Client, event *models.Event) (*datastore.Key, error) {
-	incompleteKey := datastore.IncompleteKey("Event", nil)
-	key, err := client.Put(ctx, incompleteKey, event)
+func CreateEvent(ctx context.Context, client *firestore.Client, event *models.Event) (*firestore.DocumentRef, error) {
+	col := client.Collection("Event")
+	result, _, err := col.Add(ctx, event)
 	if err != nil {
-		return nil, errors.Wrap(err, "Failed to create datastore entity")
+		return nil, errors.Wrap(err, "Failed to create firestore entity")
 	}
-	return key, nil
+	return result, nil
 }
 
-func GetEventById(ctx context.Context, client *datastore.Client, id int64) (models.Event, error) {
+func GetEventById(ctx context.Context, client *firestore.Client, id string) (models.Event, error) {
 	var event models.Event
-	eventKey := datastore.IDKey("Event", id, nil)
-	err := client.Get(ctx, eventKey, &event)
+	col := client.Collection("Event").Doc(id)
+	snapshot, err := col.Get(ctx)
 	if err != nil {
-		return models.Event{}, errors.Wrap(err, "Failed to get datastore entity")
+		return event, errors.Wrap(err, "Failed to get firestore entity")
+	}
+	if err := snapshot.DataTo(&event); err != nil {
+		return event, errors.Wrap(err, "Failed to convert firestore entity")
 	}
 
 	return event, nil
-}
-
-func DeleteEvent(ctx context.Context, client *datastore.Client, id int64) error {
-	key := datastore.IDKey("Event", id, nil)
-	err := client.Delete(ctx, key)
-	if err != nil {
-		return errors.Wrap(err, "Failed to delete datastore entity")
-	}
-
-	return nil
 }

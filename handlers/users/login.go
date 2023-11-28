@@ -1,7 +1,7 @@
 package users
 
 import (
-	"backend-go/ds"
+	"backend-go/fs"
 	"backend-go/repository"
 	"net/http"
 	"os"
@@ -24,12 +24,12 @@ func Login(c *gin.Context) {
 		})
 	}
 
-	key, err := repository.GetUserByEmail(ds.CTX, ds.Client, body.Email)
+	key, err := repository.GetUserByEmail(fs.CTX, fs.FSClient, body.Email)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"code": http.StatusInternalServerError, "message": err.Error()})
 		return
 	}
-	user, err := repository.GetUserById(ds.CTX, ds.Client, key.ID)
+	user, err := repository.GetUserById(fs.CTX, fs.FSClient, key.ID)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"code": http.StatusInternalServerError, "message": err.Error()})
 		return
