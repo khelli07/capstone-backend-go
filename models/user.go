@@ -1,19 +1,5 @@
 package models
 
-import (
-	"time"
-)
-
-func (u *User) BeforeInsert() {
-	now := time.Now()
-	u.CreatedAt = now
-	u.UpdatedAt = now
-}
-
-func (u *User) BeforeUpdate() {
-	u.UpdatedAt = time.Now()
-}
-
 type User struct {
 	Timestamps
 	Username string `firestore:"username" json:"username"`
