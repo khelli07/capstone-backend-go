@@ -3,6 +3,7 @@ package repository
 import (
 	"backend-go/fs"
 	"backend-go/models"
+	"backend-go/mongodb"
 	"context"
 	"math"
 	"sort"
@@ -10,25 +11,34 @@ import (
 
 	"cloud.google.com/go/firestore"
 	"github.com/pkg/errors"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
-func CreateEvent(ctx context.Context, client *firestore.Client, event *models.Event) (*firestore.DocumentRef, error) {
-	result, _, err := fs.EventCol.Add(ctx, event)
+func CreateEvent(event *models.Event) (*mongo.InsertOneResult, error) {
+	event.CreatedAt = time.Now()
+	event.UpdatedAt = time.Now()
+
+	result, err := mongodb.EventCol.InsertOne(mongodb.CTX, event)
 	if err != nil {
-		return nil, errors.Wrap(err, "Failed to create firestore entity")
+		return nil, errors.Wrap(err, "Failed to create MongoDB entity")
 	}
+
 	return result, nil
 }
 
-func GetEventById(ctx context.Context, client *firestore.Client, id string) (models.Event, error) {
+func GetEventById(id string) (models.Event, error) {
 	var event models.Event
-	doc := fs.EventCol.Doc(id)
-	snapshot, err := doc.Get(ctx)
+	objectID, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
-		return event, errors.Wrap(err, "Failed to get firestore entity")
+		return event, errors.Wrap(err, "Failed to convert ID to ObjectID")
 	}
-	if err := snapshot.DataTo(&event); err != nil {
-		return event, errors.Wrap(err, "Failed to convert firestore entity")
+
+	filter := bson.M{"_id": objectID}
+	err = mongodb.EventCol.FindOne(mongodb.CTX, filter).Decode(&event)
+	if err != nil {
+		return event, errors.Wrap(err, "Failed to get MongoDB entity")
 	}
 
 	return event, nil

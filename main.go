@@ -6,6 +6,7 @@ import (
 	"backend-go/handlers/users"
 	"backend-go/middlewares"
 	"backend-go/models"
+	"backend-go/mongodb"
 	"backend-go/utils"
 	"net/http"
 	"os"
@@ -25,6 +26,8 @@ func init() {
 	utils.LoadEnv()
 	fs.InitClient()
 	fs.InitCollections()
+	mongodb.ConnectDB()
+	mongodb.InitCollections()
 }
 
 // @title           Match-Event Backend API
@@ -37,6 +40,8 @@ func init() {
 // @host      localhost:9999
 // @BasePath  /
 func main() {
+	defer mongodb.Client.Disconnect(mongodb.CTX)
+
 	router := gin.Default()
 	router.Use(cors.Default())
 
