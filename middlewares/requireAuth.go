@@ -46,7 +46,7 @@ func RequireAuth(c *gin.Context) {
 
 		user, err := repository.GetUserById(fs.CTX, fs.FSClient, claims["id"].(string))
 		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"code": http.StatusInternalServerError, "message": err.Error()})
+			c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
 			c.AbortWithStatus(http.StatusInternalServerError)
 			return
 		}

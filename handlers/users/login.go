@@ -26,12 +26,12 @@ func Login(c *gin.Context) {
 
 	key, err := repository.GetUserByEmail(fs.CTX, fs.FSClient, body.Email)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"code": http.StatusInternalServerError, "message": err.Error()})
+		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
 		return
 	}
 	user, err := repository.GetUserById(fs.CTX, fs.FSClient, key.ID)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"code": http.StatusInternalServerError, "message": err.Error()})
+		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
 		return
 	}
 

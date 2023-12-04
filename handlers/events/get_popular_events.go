@@ -13,8 +13,8 @@ func GetPopularEvents(c *gin.Context) {
 	var events []models.Event
 	events, err := repository.GetPopularEvents(fs.CTX, fs.FSClient)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"code": http.StatusInternalServerError, "message": err.Error()})
+		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"code": http.StatusOK, "data": events})
+	c.JSON(http.StatusOK, gin.H{"data": events})
 }

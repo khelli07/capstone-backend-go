@@ -41,7 +41,7 @@ func Register(c *gin.Context) {
 		})
 		return
 	} else if err != nil && err.Error() != "User not found" {
-		c.JSON(http.StatusInternalServerError, gin.H{"code": http.StatusInternalServerError, "message": err.Error()})
+		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
 		return
 	}
 
@@ -61,7 +61,7 @@ func Register(c *gin.Context) {
 	_, err = repository.CreateUser(fs.CTX, fs.FSClient, &user)
 
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"code": http.StatusInternalServerError, "message": err.Error()})
+		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
 		return
 	}
 
