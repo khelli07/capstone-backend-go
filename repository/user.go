@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"backend-go/fs"
 	"backend-go/models"
 	"context"
 
@@ -10,8 +11,7 @@ import (
 )
 
 func CreateUser(ctx context.Context, client *firestore.Client, user *models.User) (*firestore.DocumentRef, error) {
-	col := client.Collection("User")
-	docRef, _, err := col.Add(ctx, user)
+	docRef, _, err := fs.UserCol.Add(ctx, user)
 	if err != nil {
 		return nil, errors.Wrap(err, "Failed to create firestore entity")
 	}
@@ -20,8 +20,7 @@ func CreateUser(ctx context.Context, client *firestore.Client, user *models.User
 }
 
 func GetUserByEmail(ctx context.Context, client *firestore.Client, email string) (*firestore.DocumentRef, error) {
-	col := client.Collection("User")
-	query := col.Where("email", "==", email).OrderBy("created_at", firestore.Desc).Limit(1)
+	query := fs.UserCol.Where("email", "==", email).OrderBy("created_at", firestore.Desc).Limit(1)
 
 	iter := query.Documents(ctx)
 	doc, err := iter.Next()
@@ -37,8 +36,8 @@ func GetUserByEmail(ctx context.Context, client *firestore.Client, email string)
 
 func GetUserById(ctx context.Context, client *firestore.Client, id string) (models.User, error) {
 	var user models.User
-	col := client.Collection("User").Doc(id)
-	snapshot, err := col.Get(ctx)
+	doc := fs.UserCol.Doc(id)
+	snapshot, err := doc.Get(ctx)
 	if err != nil {
 		return user, errors.Wrap(err, "Failed to get firestore entity")
 	}
