@@ -4,6 +4,8 @@ import (
 	"backend-go/fs"
 	"backend-go/models"
 	"context"
+	"math"
+	"sort"
 	"time"
 
 	"cloud.google.com/go/firestore"
@@ -51,12 +53,7 @@ func GetAllEvents(ctx context.Context, client *firestore.Client) ([]models.Event
 
 func GetPopularEvents(ctx context.Context, client *firestore.Client) ([]models.Event, error) {
 	var events []models.Event
-	query := fs.EventCol.
-		Where("end_date", ">", time.Now()).
-		OrderBy("likes", firestore.Desc).
-		OrderBy("created_at", firestore.Desc).
-		Limit(10)
-
+	query := fs.EventCol.Where("end_time", ">", time.Now())
 	iter := query.Documents(ctx)
 	for {
 		doc, err := iter.Next()
@@ -69,7 +66,13 @@ func GetPopularEvents(ctx context.Context, client *firestore.Client) ([]models.E
 		}
 		events = append(events, event)
 	}
-	return events, nil
+
+	sort.Slice(events, func(i, j int) bool {
+		return events[i].TotalLikes > events[j].TotalLikes
+	})
+
+	cutoff := math.Min(float64(len(events)), 10)
+	return events[:int32(cutoff)], nil
 }
 
 func DeleteEvent(ctx context.Context, client *firestore.Client, id string) error {
