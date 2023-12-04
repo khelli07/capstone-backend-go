@@ -24,6 +24,7 @@ import (
 func init() {
 	utils.LoadEnv()
 	fs.InitClient()
+	fs.InitCollections()
 }
 
 // @title           Match-Event Backend API
@@ -61,9 +62,13 @@ func main() {
 
 	event := router.Group("/event")
 	{
+		event.GET("/", events.GetAllEvents)
 		event.GET("/:id", events.GetEventById)
+		event.GET("/popular", events.GetPopularEvents)
 		event.POST("/", events.CreateEvent)
-
+		event.POST("/:id/join", events.JoinEvent)
+		event.PUT("/:id", events.UpdateEvent)
+		event.DELETE("/:id", events.DeleteEvent)
 	}
 
 	router.Run(":" + os.Getenv("PORT"))
