@@ -1,7 +1,6 @@
 package events
 
 import (
-	"backend-go/fs"
 	"backend-go/repository"
 	"net/http"
 
@@ -10,7 +9,7 @@ import (
 
 func DeleteEvent(c *gin.Context) {
 	id := c.Param("id")
-	err := repository.DeleteEvent(fs.CTX, fs.FSClient, id)
+	err := repository.DeleteEvent(id)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
 		return

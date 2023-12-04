@@ -40,7 +40,7 @@ func init() {
 // @host      localhost:9999
 // @BasePath  /
 func main() {
-	defer mongodb.Client.Disconnect(mongodb.CTX)
+	defer mongodb.Client.Disconnect(mongodb.Context)
 
 	router := gin.Default()
 	router.Use(cors.Default())

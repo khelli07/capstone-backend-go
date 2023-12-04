@@ -1,7 +1,6 @@
 package events
 
 import (
-	"backend-go/fs"
 	"backend-go/models"
 	"backend-go/repository"
 	"net/http"
@@ -12,7 +11,7 @@ import (
 func GetAllEvents(c *gin.Context) {
 	// TODO: Search filters
 	var events []models.Event
-	events, err := repository.GetAllEvents(fs.CTX, fs.FSClient)
+	events, err := repository.GetAllEvents()
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})

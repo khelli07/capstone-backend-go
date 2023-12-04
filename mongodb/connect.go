@@ -13,11 +13,11 @@ import (
 
 var Client *mongo.Client
 var DB *mongo.Database
-var CTX context.Context
+var Context context.Context
 
 func ConnectDB() {
 	mongoURI := os.Getenv("MONGO_URI")
-	CTX = context.Background()
+	Context = context.Background()
 	if mongoURI == "" {
 		log.Fatal("MONGO_URI environment variable not set")
 	}
