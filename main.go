@@ -24,6 +24,7 @@ import (
 func init() {
 	utils.LoadEnv()
 	fs.InitClient()
+	fs.InitCollections()
 }
 
 // @title           Match-Event Backend API
