@@ -17,10 +17,10 @@ type Event struct {
 	Price       float32            `bson:"price" json:"price"`
 	Capacity    int32              `bson:"capacity" json:"capacity"`
 	// non-mandatory fields
-	Organizer    string `bson:"organizer" json:"organizer"`
-	DressCode    string `bson:"dress_code" json:"dress_code"`
-	AgeLimit     int    `bson:"age_limit" json:"age_limit"`
-	TotalLikes   int    `bson:"total_likes" json:"total_likes"`
-	Participants []User `bson:"participants" json:"participants"`
+	Organizer    string   `bson:"organizer" json:"organizer"`
+	DressCode    string   `bson:"dress_code" json:"dress_code"`
+	AgeLimit     int      `bson:"age_limit" json:"age_limit"`
+	TotalLikes   int      `bson:"total_likes" json:"total_likes"`
+	Participants []string `bson:"participants" json:"participants"`
 	Timestamps
 }
