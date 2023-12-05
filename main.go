@@ -62,6 +62,11 @@ func main() {
 		auth.POST("/login", users.Login)
 	}
 
+	user := router.Group("/user")
+	{
+		user.GET("/:id", users.GetUserById)
+	}
+
 	event := router.Group("/event")
 	{
 		event.GET("/", events.GetAllEvents)
