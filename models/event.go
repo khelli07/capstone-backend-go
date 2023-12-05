@@ -23,6 +23,5 @@ type Event struct {
 	// relational fields
 	Categories   []string `bson:"categories" json:"categories"`
 	Participants []string `bson:"participants" json:"participants"`
-	Reviews      []string `bson:"reviews" json:"reviews"`
 	Timestamps
 }

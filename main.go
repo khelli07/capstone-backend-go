@@ -2,6 +2,7 @@ package main
 
 import (
 	"backend-go/handlers/events"
+	"backend-go/handlers/reviews"
 	"backend-go/handlers/users"
 	"backend-go/middlewares"
 	"backend-go/models"
@@ -76,6 +77,12 @@ func main() {
 		event.POST("/:id/join", middlewares.RequireAuth, events.JoinEvent)
 		event.PUT("/:id", events.UpdateEvent)
 		event.DELETE("/:id", events.DeleteEvent)
+	}
+
+	review := router.Group("/review")
+	{
+		review.GET("/:event_id", reviews.GetReviews)
+		review.POST("/:event_id", middlewares.RequireAuth, reviews.CreateReview)
 	}
 
 	router.Run(":" + os.Getenv("PORT"))
