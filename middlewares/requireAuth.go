@@ -20,6 +20,7 @@ func RequireAuth(c *gin.Context) {
 			"message": "You must be logged in to access this",
 		})
 		c.AbortWithStatus(http.StatusUnauthorized)
+		return
 	}
 
 	tokenString = strings.Split(tokenString, "Bearer ")[1]
@@ -41,6 +42,7 @@ func RequireAuth(c *gin.Context) {
 				"message": "Token expired",
 			})
 			c.AbortWithStatus(http.StatusBadRequest)
+			return
 		}
 
 		user, err := repository.GetUserById(claims["id"].(string))
@@ -64,6 +66,7 @@ func RequireAuth(c *gin.Context) {
 			"message": "Invalid token",
 		})
 		c.AbortWithStatus(http.StatusBadRequest)
+		return
 	}
 
 }
