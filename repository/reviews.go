@@ -35,7 +35,7 @@ func GetReviews(eventID string) ([]models.Review, error) {
 	var reviews []models.Review
 
 	filter := bson.M{"event_id": eventID}
-	options := options.Find().SetSort(bson.M{"created_at": -1}) // TODO: not working yet
+	options := options.Find().SetSort(bson.M{"timestamps.created_at": -1})
 
 	cursor, err := mongodb.ReviewCol.Find(mongodb.Context, filter, options)
 	if err != nil {
