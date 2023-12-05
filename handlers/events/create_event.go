@@ -75,10 +75,6 @@ func CreateEvent(c *gin.Context) {
 		DressCode:   body.DressCode,
 		AgeLimit:    body.AgeLimit,
 		TotalLikes:  0,
-		Timestamps: models.Timestamps{
-			CreatedAt: time.Now(),
-			UpdatedAt: time.Now(),
-		},
 	}
 
 	result, err := repository.CreateEvent(&event)

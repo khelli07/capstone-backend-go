@@ -17,7 +17,7 @@ func RequireAuth(c *gin.Context) {
 	tokenString := c.GetHeader("Authorization")
 	if tokenString == "" {
 		c.JSON(http.StatusUnauthorized, gin.H{
-			"message": "No token provided",
+			"message": "You must be logged in to access this",
 		})
 		c.AbortWithStatus(http.StatusUnauthorized)
 	}

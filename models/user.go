@@ -7,7 +7,7 @@ type User struct {
 	ID       primitive.ObjectID `bson:"_id,omitempty" json:"id"`
 	Username string             `firestore:"username" json:"username"`
 	Email    string             `firestore:"email" json:"email"`
-	Password string             `firestore:"password" json:"password"`
+	Password string             `firestore:"password" json:"-"`
 }
 
 type TokenUser struct {

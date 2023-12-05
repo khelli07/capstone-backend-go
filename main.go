@@ -68,7 +68,7 @@ func main() {
 		event.GET("/:id", events.GetEventById)
 		event.GET("/popular", events.GetPopularEvents)
 		event.POST("/", events.CreateEvent)
-		event.POST("/:id/join", events.JoinEvent)
+		event.POST("/:id/join", middlewares.RequireAuth, events.JoinEvent)
 		event.PUT("/:id", events.UpdateEvent)
 		event.DELETE("/:id", events.DeleteEvent)
 	}

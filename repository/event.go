@@ -72,6 +72,24 @@ func GetPopularEvents(topK int) ([]models.Event, error) {
 	return events, nil
 }
 
+func UpdateEvent(id string, event *models.Event) (*mongo.UpdateResult, error) {
+	event.UpdatedAt = time.Now()
+
+	objectID, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return nil, errors.Wrap(err, "Failed to convert ID to ObjectID")
+	}
+
+	filter := bson.M{"_id": objectID}
+	update := bson.M{"$set": event}
+	result, err := mongodb.EventCol.UpdateOne(mongodb.Context, filter, update)
+	if err != nil {
+		return nil, errors.Wrap(err, "Failed to update MongoDB entity")
+	}
+
+	return result, nil
+}
+
 func DeleteEvent(id string) error {
 	objectID, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
