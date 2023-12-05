@@ -1,20 +1,26 @@
 package models
 
-type EventMandatory struct {
-	TimeRange
-	Name        string   `firestore:"name" json:"name"`
-	Categories  []string `firestore:"categories" json:"categories"`
-	Description string   `firestore:"description" json:"description"`
-	Location    string   `firestore:"location" json:"location"`
-	Price       float32  `firestore:"price" json:"price"`
-	Capacity    int32    `firestore:"capacity" json:"capacity"`
-}
+import (
+	"time"
+
+	"go.mongodb.org/mongo-driver/bson/primitive"
+)
 
 type Event struct {
+	ID          primitive.ObjectID `bson:"_id,omitempty" json:"id"`
+	StartTime   time.Time          `bson:"start_time" json:"start_time"`
+	EndTime     time.Time          `bson:"end_time" json:"end_time"`
+	Name        string             `bson:"name" json:"name"`
+	Categories  []string           `bson:"categories" json:"categories"`
+	Description string             `bson:"description" json:"description"`
+	Location    string             `bson:"location" json:"location"`
+	Price       float32            `bson:"price" json:"price"`
+	Capacity    int32              `bson:"capacity" json:"capacity"`
+	// non-mandatory fields
+	Organizer    string `bson:"organizer" json:"organizer"`
+	DressCode    string `bson:"dress_code" json:"dress_code"`
+	AgeLimit     int    `bson:"age_limit" json:"age_limit"`
+	TotalLikes   int    `bson:"total_likes" json:"total_likes"`
+	Participants []User `bson:"participants" json:"participants"`
 	Timestamps
-	EventMandatory
-	Organizer  string `firestore:"organizer" json:"organizer"`
-	DressCode  string `firestore:"dress_code" json:"dress_code"`
-	AgeLimit   int    `firestore:"age_limit" json:"age_limit"`
-	TotalLikes int    `firestore:"total_likes" json:"total_likes"`
 }

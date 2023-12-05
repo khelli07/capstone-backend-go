@@ -1,7 +1,6 @@
 package users
 
 import (
-	"backend-go/fs"
 	"backend-go/repository"
 	"net/http"
 	"os"
@@ -24,18 +23,19 @@ func Login(c *gin.Context) {
 		})
 	}
 
-	key, err := repository.GetUserByEmail(fs.CTX, fs.FSClient, body.Email)
+	user, err := repository.GetUserByEmail(body.Email)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"code": http.StatusInternalServerError, "message": err.Error()})
-		return
-	}
-	user, err := repository.GetUserById(fs.CTX, fs.FSClient, key.ID)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"code": http.StatusInternalServerError, "message": err.Error()})
+		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
 		return
 	}
 
-	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(body.Password))
+	newUser, err := repository.GetUserById(user.ID.Hex())
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+		return
+	}
+
+	err = bcrypt.CompareHashAndPassword([]byte(newUser.Password), []byte(body.Password))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "Email and password mismatch",
@@ -44,7 +44,7 @@ func Login(c *gin.Context) {
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"id":      key.ID,
+		"id":      newUser.ID,
 		"expires": time.Now().Add(time.Hour * 24 * 7).Unix(),
 	})
 

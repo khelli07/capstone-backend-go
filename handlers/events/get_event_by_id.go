@@ -1,7 +1,6 @@
 package events
 
 import (
-	"backend-go/fs"
 	"backend-go/repository"
 	"net/http"
 
@@ -10,9 +9,9 @@ import (
 
 func GetEventById(c *gin.Context) {
 	id := c.Param("id")
-	entity, err := repository.GetEventById(fs.CTX, fs.FSClient, id)
+	entity, err := repository.GetEventById(id)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"code": http.StatusInternalServerError, "message": err.Error()})
+		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
 		return
 	}
 	c.JSON(http.StatusOK, entity)
