@@ -1,7 +1,6 @@
 package main
 
 import (
-	"backend-go/fs"
 	"backend-go/handlers/events"
 	"backend-go/handlers/users"
 	"backend-go/middlewares"
@@ -24,8 +23,6 @@ import (
 
 func init() {
 	utils.LoadEnv()
-	fs.InitClient()
-	fs.InitCollections()
 	mongodb.ConnectDB()
 	mongodb.InitCollections()
 }

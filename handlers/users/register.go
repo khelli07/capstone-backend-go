@@ -1,10 +1,8 @@
 package users
 
 import (
-	"backend-go/fs"
 	"backend-go/models"
 	"backend-go/repository"
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -13,10 +11,9 @@ import (
 
 func Register(c *gin.Context) {
 	var body struct {
-		Username  string
-		Email     string
-		Password  string
-		Password2 string
+		Username string
+		Email    string
+		Password string
 	}
 
 	if c.Bind(&body) != nil {
@@ -26,15 +23,7 @@ func Register(c *gin.Context) {
 		return
 	}
 
-	if body.Password != body.Password2 {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Password mismatch",
-		})
-		return
-	}
-
-	doc, err := repository.GetUserByEmail(fs.CTX, fs.FSClient, body.Email)
-	fmt.Println(doc)
+	doc, err := repository.GetUserByEmail(body.Email)
 	if doc != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "Email has been taken!",
@@ -58,7 +47,7 @@ func Register(c *gin.Context) {
 		Email:    body.Email,
 		Password: string(hash),
 	}
-	_, err = repository.CreateUser(fs.CTX, fs.FSClient, &user)
+	_, err = repository.CreateUser(&user)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})

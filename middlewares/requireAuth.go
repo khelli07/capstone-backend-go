@@ -1,7 +1,6 @@
 package middlewares
 
 import (
-	"backend-go/fs"
 	"backend-go/models"
 	"backend-go/repository"
 	"fmt"
@@ -44,7 +43,7 @@ func RequireAuth(c *gin.Context) {
 			c.AbortWithStatus(http.StatusBadRequest)
 		}
 
-		user, err := repository.GetUserById(fs.CTX, fs.FSClient, claims["id"].(string))
+		user, err := repository.GetUserById(claims["id"].(string))
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
 			c.AbortWithStatus(http.StatusInternalServerError)
