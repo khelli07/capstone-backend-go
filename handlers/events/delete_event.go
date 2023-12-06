@@ -7,6 +7,15 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// DeleteEvent godoc
+// @Summary Delete an event
+// @Description Delete an event
+// @Tags events
+// @Accept  json
+// @Produce  json
+// @Param id path string true "Event ID"
+// @Success 200 {object} payload.GeneralResponse
+// @Router /events/{id} [delete]
 func DeleteEvent(c *gin.Context) {
 	id := c.Param("id")
 	err := repository.DeleteEvent(id)

@@ -1,4 +1,138 @@
 basePath: /
+definitions:
+  models.Event:
+    properties:
+      age_limit:
+        type: integer
+      capacity:
+        type: integer
+      categories:
+        description: relational fields
+        items:
+          type: string
+        type: array
+      created_at:
+        type: string
+      description:
+        type: string
+      dress_code:
+        type: string
+      end_time:
+        type: string
+      id:
+        type: string
+      location:
+        type: string
+      name:
+        type: string
+      organizer:
+        description: non-mandatory fields
+        type: string
+      participants:
+        items:
+          type: string
+        type: array
+      price:
+        type: number
+      start_time:
+        type: string
+      total_likes:
+        type: integer
+      updated_at:
+        type: string
+    type: object
+  payload.CreateEventRequest:
+    properties:
+      age_limit:
+        type: integer
+      capacity:
+        type: integer
+      categories:
+        items:
+          type: string
+        type: array
+      description:
+        type: string
+      dress_code:
+        type: string
+      end_time:
+        type: string
+      location:
+        type: string
+      name:
+        type: string
+      organizer:
+        type: string
+      price:
+        type: number
+      start_time:
+        type: string
+    type: object
+  payload.CreateEventResponse:
+    properties:
+      id:
+        type: string
+    type: object
+  payload.GeneralResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  payload.GetEventsResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/models.Event'
+        type: array
+    type: object
+  payload.LoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  payload.LoginResponse:
+    properties:
+      token:
+        type: string
+    type: object
+  payload.RegisterRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  payload.UpdateEventRequest:
+    properties:
+      age_limit:
+        type: integer
+      capacity:
+        type: integer
+      categories:
+        items:
+          type: string
+        type: array
+      description:
+        type: string
+      dress_code:
+        type: string
+      end_time:
+        type: string
+      location:
+        type: string
+      name:
+        type: string
+      organizer:
+        type: string
+      price:
+        type: number
+      start_time:
+        type: string
+    type: object
 host: localhost:9999
 info:
   contact: {}
@@ -8,5 +142,191 @@ info:
     url: http://www.apache.org/licenses/LICENSE-2.0.html
   title: Match-Event Backend API
   version: "1.0"
-paths: {}
+paths:
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Login
+      parameters:
+      - description: Login
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/payload.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/payload.LoginResponse'
+      summary: Login
+      tags:
+      - users
+  /auth/register:
+    post:
+      consumes:
+      - application/json
+      description: Register a new user
+      parameters:
+      - description: User
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/payload.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/payload.GeneralResponse'
+      summary: Register a new user
+      tags:
+      - users
+  /events:
+    get:
+      consumes:
+      - application/json
+      description: Get all events
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/payload.GetEventsResponse'
+      summary: Get all events
+      tags:
+      - events
+    post:
+      consumes:
+      - application/json
+      description: Create an event
+      parameters:
+      - description: Event object
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/payload.CreateEventRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/payload.CreateEventResponse'
+      summary: Create an event
+      tags:
+      - events
+  /events/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete an event
+      parameters:
+      - description: Event ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/payload.GeneralResponse'
+      summary: Delete an event
+      tags:
+      - events
+    get:
+      consumes:
+      - application/json
+      description: Get an event by ID
+      parameters:
+      - description: Event ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Event'
+      summary: Get an event by ID
+      tags:
+      - events
+    put:
+      consumes:
+      - application/json
+      description: Update an event
+      parameters:
+      - description: Event ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Event
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/payload.UpdateEventRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/payload.GeneralResponse'
+      summary: Update an event
+      tags:
+      - events
+  /events/{id}/join:
+    post:
+      consumes:
+      - application/json
+      description: Join an event
+      parameters:
+      - description: Event ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/payload.GeneralResponse'
+      summary: Join an event [LOGIN REQUIRED]
+      tags:
+      - events
+  /events/popular:
+    get:
+      consumes:
+      - application/json
+      description: Get popular events
+      parameters:
+      - description: Top K
+        in: query
+        name: topK
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/payload.GetEventsResponse'
+      summary: Get popular events
+      tags:
+      - events
 swagger: "2.0"

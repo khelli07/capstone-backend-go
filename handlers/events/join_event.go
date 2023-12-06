@@ -8,6 +8,14 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// JoinEvent godoc
+// @Summary Join an event [LOGIN REQUIRED]
+// @Description Join an event
+// @Tags events
+// @Accept  json
+// @Param id path string true "Event ID"
+// @Success 200 {object} payload.GeneralResponse
+// @Router /events/{id}/join [post]
 func JoinEvent(c *gin.Context) {
 	eventID := c.Param("id")
 	event, err := repository.GetEventById(eventID)

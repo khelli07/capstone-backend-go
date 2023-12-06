@@ -1,6 +1,7 @@
 package users
 
 import (
+	payload "backend-go/payload/request"
 	"backend-go/repository"
 	"net/http"
 	"os"
@@ -11,12 +12,17 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+// Login godoc
+// @Summary Login
+// @Description Login
+// @Tags users
+// @Accept  json
+// @Produce  json
+// @Param body body payload.LoginRequest true "Login"
+// @Success 200 {object} payload.LoginResponse
+// @Router /auth/login [post]
 func Login(c *gin.Context) {
-	var body struct {
-		Email    string
-		Password string
-	}
-
+	var body payload.LoginRequest
 	if c.Bind(&body) != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "Failed to process request body",

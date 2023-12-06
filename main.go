@@ -63,12 +63,12 @@ func main() {
 		auth.POST("/login", users.Login)
 	}
 
-	user := router.Group("/user")
+	user := router.Group("/users")
 	{
 		user.GET("/:id", users.GetUserById)
 	}
 
-	event := router.Group("/event")
+	event := router.Group("/events")
 	{
 		event.GET("/", events.GetAllEvents)
 		event.GET("/:id", events.GetEventById)
@@ -79,7 +79,7 @@ func main() {
 		event.DELETE("/:id", events.DeleteEvent)
 	}
 
-	review := router.Group("/review")
+	review := router.Group("/reviews")
 	{
 		review.GET("/:event_id", reviews.GetReviews)
 		review.POST("/:event_id", middlewares.RequireAuth, reviews.CreateReview)

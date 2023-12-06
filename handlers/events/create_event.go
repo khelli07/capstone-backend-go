@@ -2,6 +2,7 @@ package events
 
 import (
 	"backend-go/models"
+	payload "backend-go/payload/request"
 	"backend-go/repository"
 	"net/http"
 	"time"
@@ -9,21 +10,17 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// CreateEvent godoc
+// @Summary Create an event
+// @Description Create an event
+// @Tags events
+// @Accept json
+// @Produce json
+// @Param body body payload.CreateEventRequest true "Event object"
+// @Success 200 {object} payload.CreateEventResponse
+// @Router /events [post]
 func CreateEvent(c *gin.Context) {
-	var body struct {
-		Name        string   `json:"name"`
-		Categories  []string `json:"categories"`
-		Description string   `json:"description"`
-		Location    string   `json:"location"`
-		Price       float32  `json:"price"`
-		Capacity    int32    `json:"capacity"`
-		Organizer   string   `json:"organizer"`
-		DressCode   string   `json:"dress_code"`
-		AgeLimit    int      `json:"age_limit"`
-		StartTime   string   `json:"start_time"`
-		EndTime     string   `json:"end_time"`
-	}
-
+	var body payload.CreateEventRequest
 	if err := c.BindJSON(&body); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
