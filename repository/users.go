@@ -55,3 +55,21 @@ func GetUserById(id string) (models.User, error) {
 
 	return user, nil
 }
+
+func UpdateUser(id string, user *models.User) (*mongo.UpdateResult, error) {
+	objectID, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return nil, errors.Wrap(err, "Failed to convert ID to ObjectID")
+	}
+
+	user.UpdatedAt = time.Now()
+	filter := bson.M{"_id": objectID}
+	update := bson.M{"$set": user}
+
+	result, err := mongodb.UserCol.UpdateOne(mongodb.Context, filter, update)
+	if err != nil {
+		return nil, errors.Wrap(err, "Failed to update MongoDB entity")
+	}
+
+	return result, nil
+}
