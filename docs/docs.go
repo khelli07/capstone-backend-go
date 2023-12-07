@@ -335,10 +335,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/models.Location"
-                            }
+                            "$ref": "#/definitions/payload.GetLocationsResponse"
                         }
                     }
                 }
@@ -899,6 +896,17 @@ const docTemplate = `{
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/models.Event"
+                    }
+                }
+            }
+        },
+        "payload.GetLocationsResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Location"
                     }
                 }
             }

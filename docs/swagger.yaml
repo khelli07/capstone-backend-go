@@ -159,6 +159,13 @@ definitions:
           $ref: '#/definitions/models.Event'
         type: array
     type: object
+  payload.GetLocationsResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/models.Location'
+        type: array
+    type: object
   payload.GetReviewsResponse:
     properties:
       average_rating:
@@ -445,9 +452,7 @@ paths:
         "200":
           description: OK
           schema:
-            items:
-              $ref: '#/definitions/models.Location'
-            type: array
+            $ref: '#/definitions/payload.GetLocationsResponse'
       summary: Get locations
       tags:
       - locations

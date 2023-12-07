@@ -1,6 +1,7 @@
 package locations
 
 import (
+	"backend-go/models"
 	"backend-go/repository"
 	"net/http"
 
@@ -17,7 +18,7 @@ import (
 // @Accept  json
 // @Produce  json
 // @Param level query string false "Location level"
-// @Success 200 {object} []models.Location
+// @Success 200 {object} payload.GetLocationsResponse
 // @Router /locations [get]
 func GetLocations(c *gin.Context) {
 	level := c.Query("level")
@@ -38,6 +39,10 @@ func GetLocations(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, locations)
+	if len(locations) == 0 {
+		locations = []models.Location{}
+	}
+
+	c.JSON(http.StatusOK, gin.H{"data": locations})
 	return
 }
