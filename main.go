@@ -1,7 +1,9 @@
 package main
 
 import (
+	"backend-go/handlers/categories"
 	"backend-go/handlers/events"
+	"backend-go/handlers/locations"
 	"backend-go/handlers/reviews"
 	"backend-go/handlers/users"
 	"backend-go/middlewares"
@@ -66,6 +68,7 @@ func main() {
 	user := router.Group("/users")
 	{
 		user.GET("/:id", users.GetUserById)
+		user.PUT("/:id", middlewares.RequireAuth, users.UpdateUser)
 	}
 
 	event := router.Group("/events")
@@ -84,6 +87,22 @@ func main() {
 		review.GET("/:event_id", reviews.GetReviews)
 		review.POST("/:event_id", middlewares.RequireAuth, reviews.CreateReview)
 		review.DELETE("/:id", middlewares.RequireAuth, reviews.DeleteReview)
+	}
+
+	category := router.Group("/categories")
+	{
+		category.GET("/", categories.GetAllCategories)
+		category.POST("/", categories.CreateCategory)
+		category.PUT("/:id", categories.UpdateCategory)
+		category.DELETE("/:id", categories.DeleteCategory)
+	}
+
+	location := router.Group("/locations")
+	{
+		location.GET("/", locations.GetAllLocations)
+		location.POST("/", locations.CreateLocation)
+		location.PUT("/:id", locations.UpdateLocation)
+		location.DELETE("/:id", locations.DeleteLocation)
 	}
 
 	router.Run(":" + os.Getenv("PORT"))
