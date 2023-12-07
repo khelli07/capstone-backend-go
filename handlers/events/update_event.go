@@ -73,9 +73,7 @@ func UpdateEvent(c *gin.Context) {
 
 	_, err = repository.UpdateEvent(id, &updatedEvent)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"message": "Failed to update event",
-		})
+		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
 		return
 	}
 

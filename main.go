@@ -93,7 +93,7 @@ func main() {
 
 	location := router.Group("/locations")
 	{
-		location.GET("/", locations.GetAllLocations)
+		location.GET("/", locations.GetLocations)
 		location.POST("/", locations.CreateLocation)
 		location.PUT("/:id", locations.UpdateLocation)
 		location.DELETE("/:id", locations.DeleteLocation)
