@@ -7,6 +7,7 @@ import (
 
 	"github.com/pkg/errors"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -47,4 +48,35 @@ func GetReviews(eventID string) ([]models.Review, error) {
 	}
 
 	return reviews, nil
+}
+
+func GetReviewById(id string) (models.Review, error) {
+	var review models.Review
+	objectID, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return review, errors.Wrap(err, "Failed to convert ID to ObjectID")
+	}
+
+	filter := bson.M{"_id": objectID}
+	err = mongodb.ReviewCol.FindOne(mongodb.Context, filter).Decode(&review)
+	if err != nil {
+		return review, errors.Wrap(err, "Failed to get MongoDB entity")
+	}
+
+	return review, nil
+}
+
+func DeleteReview(id string) error {
+	objectID, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return errors.Wrap(err, "Failed to convert ID to ObjectID")
+	}
+
+	filter := bson.M{"_id": objectID}
+	_, err = mongodb.ReviewCol.DeleteOne(mongodb.Context, filter)
+	if err != nil {
+		return errors.Wrap(err, "Failed to delete MongoDB entity")
+	}
+
+	return nil
 }

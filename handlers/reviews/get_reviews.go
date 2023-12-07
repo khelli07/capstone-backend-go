@@ -6,6 +6,15 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// GetReviews godoc
+// @Summary Get reviews of an event
+// @Description Get reviews of an event
+// @Tags reviews
+// @Accept  json
+// @Param id path string true "Event ID"
+// @Produce  json
+// @Success 200 {object} payload.GetReviewsResponse
+// @Router /reviews/{event_id} [get]
 func GetReviews(c *gin.Context) {
 	id := c.Param("event_id")
 

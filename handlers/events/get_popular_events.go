@@ -10,6 +10,15 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// GetPopularEvents godoc
+// @Summary Get popular events
+// @Description Get popular events
+// @Tags events
+// @Accept  json
+// @Produce  json
+// @Param topK query string false "Top K"
+// @Success 200 {object} payload.GetEventsResponse
+// @Router /events/popular [get]
 func GetPopularEvents(c *gin.Context) {
 	topK := c.Params.ByName("topK")
 	if topK == "" {

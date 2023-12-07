@@ -8,6 +8,14 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// GetAllEvents godoc
+// @Summary Get all events
+// @Description Get all events
+// @Tags events
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} payload.GetEventsResponse
+// @Router /events [get]
 func GetAllEvents(c *gin.Context) {
 	// TODO: Search filters
 	var events []models.Event

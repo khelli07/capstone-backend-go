@@ -2,6 +2,7 @@ package users
 
 import (
 	"backend-go/models"
+	payload "backend-go/payload/request"
 	"backend-go/repository"
 	"net/http"
 
@@ -9,13 +10,17 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+// Register godoc
+// @Summary Register a new user
+// @Description Register a new user
+// @Tags users
+// @Accept  json
+// @Produce  json
+// @Param body body payload.RegisterRequest true "User"
+// @Success 200 {object} payload.GeneralResponse
+// @Router /auth/register [post]
 func Register(c *gin.Context) {
-	var body struct {
-		Username string
-		Email    string
-		Password string
-	}
-
+	var body payload.RegisterRequest
 	if c.Bind(&body) != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "Failed to process request body",

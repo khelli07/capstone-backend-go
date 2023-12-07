@@ -2,6 +2,7 @@ package events
 
 import (
 	"backend-go/models"
+	payload "backend-go/payload/request"
 	"backend-go/repository"
 	"net/http"
 	"time"
@@ -9,21 +10,18 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// UpdateEvent godoc
+// @Summary Update an event
+// @Description Update an event
+// @Tags events
+// @Accept  json
+// @Produce  json
+// @Param id path string true "Event ID"
+// @Param body body payload.UpdateEventRequest true "Event"
+// @Success 200 {object} payload.GeneralResponse
+// @Router /events/{id} [put]
 func UpdateEvent(c *gin.Context) {
-	var body struct {
-		Name        string   `json:"name"`
-		Categories  []string `json:"categories"`
-		Description string   `json:"description"`
-		Location    string   `json:"location"`
-		Price       float32  `json:"price"`
-		Capacity    int32    `json:"capacity"`
-		Organizer   string   `json:"organizer"`
-		DressCode   string   `json:"dress_code"`
-		AgeLimit    int      `json:"age_limit"`
-		StartTime   string   `json:"start_time"`
-		EndTime     string   `json:"end_time"`
-	}
-
+	var body payload.UpdateEventRequest
 	if err := c.ShouldBindJSON(&body); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "Invalid request body",
