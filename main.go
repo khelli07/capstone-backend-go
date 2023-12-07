@@ -62,7 +62,7 @@ func main() {
 	{
 		user.GET("/", middlewares.RequireAuth, users.GetUserInfo)
 		user.PUT("/", middlewares.RequireAuth, users.UpdateUser)
-		user.GET("/:id", users.GetUserInfo)
+		user.GET("/:id", users.GetUserById)
 	}
 
 	event := router.Group("/events")

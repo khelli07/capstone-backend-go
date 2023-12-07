@@ -10,7 +10,7 @@ import (
 )
 
 // CreateReview godoc
-// @Summary Create a review [LOGIN REQUIRED]
+// @Summary Create a review
 // @Description Create a review
 // @Tags reviews
 // @Accept  json

@@ -9,7 +9,7 @@ import (
 )
 
 // DeleteReview godoc
-// @Summary Delete a review [LOGIN REQUIRED]
+// @Summary Delete a review
 // @Description Delete a review
 // @Tags reviews
 // @Accept  json

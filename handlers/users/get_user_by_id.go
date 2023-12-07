@@ -7,6 +7,15 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// GetUserById godoc
+// @Summary Get user by id
+// @Description Get user by id
+// @Tags users
+// @Accept  json
+// @Produce  json
+// @Param id path string true "User ID"
+// @Success 200 {object} models.User
+// @Router /users/{id} [get]
 func GetUserById(c *gin.Context) {
 	id := c.Param("id")
 	entity, err := repository.GetUserById(id)

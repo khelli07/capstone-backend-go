@@ -9,7 +9,7 @@ import (
 )
 
 // JoinEvent godoc
-// @Summary Join an event [LOGIN REQUIRED]
+// @Summary Join an event
 // @Description Join an event
 // @Tags events
 // @Accept  json

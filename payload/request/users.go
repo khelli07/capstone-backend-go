@@ -10,3 +10,7 @@ type LoginRequest struct {
 	Email    string
 	Password string
 }
+
+type UpdateUserRequest struct {
+	Username string
+}
