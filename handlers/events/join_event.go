@@ -13,6 +13,7 @@ import (
 // @Description Join an event
 // @Tags events
 // @Accept  json
+// @Param Authorization header string true "With the bearer started"
 // @Param id path string true "Event ID"
 // @Success 200 {object} payload.GeneralResponse
 // @Router /events/{id}/join [post]

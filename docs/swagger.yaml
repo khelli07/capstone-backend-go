@@ -41,6 +41,23 @@ definitions:
       updated_at:
         type: string
     type: object
+  models.Review:
+    properties:
+      comment:
+        type: string
+      created_at:
+        type: string
+      event_id:
+        type: string
+      id:
+        type: string
+      rating:
+        type: integer
+      updated_at:
+        type: string
+      user_id:
+        type: string
+    type: object
   payload.CreateEventRequest:
     properties:
       age_limit:
@@ -68,10 +85,17 @@ definitions:
       start_time:
         type: string
     type: object
-  payload.CreateEventResponse:
+  payload.CreateResponse:
     properties:
       id:
         type: string
+    type: object
+  payload.CreateReviewRequest:
+    properties:
+      comment:
+        type: string
+      rating:
+        type: integer
     type: object
   payload.GeneralResponse:
     properties:
@@ -83,6 +107,15 @@ definitions:
       data:
         items:
           $ref: '#/definitions/models.Event'
+        type: array
+    type: object
+  payload.GetReviewsResponse:
+    properties:
+      average_rating:
+        type: number
+      data:
+        items:
+          $ref: '#/definitions/models.Review'
         type: array
     type: object
   payload.LoginRequest:
@@ -219,7 +252,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/payload.CreateEventResponse'
+            $ref: '#/definitions/payload.CreateResponse'
       summary: Create an event
       tags:
       - events
@@ -296,6 +329,11 @@ paths:
       - application/json
       description: Join an event
       parameters:
+      - description: With the bearer started
+        in: header
+        name: Authorization
+        required: true
+        type: string
       - description: Event ID
         in: path
         name: id
@@ -329,4 +367,78 @@ paths:
       summary: Get popular events
       tags:
       - events
+  /reviews/{event_id}:
+    get:
+      consumes:
+      - application/json
+      description: Get reviews of an event
+      parameters:
+      - description: Event ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/payload.GetReviewsResponse'
+      summary: Get reviews of an event
+      tags:
+      - reviews
+    post:
+      consumes:
+      - application/json
+      description: Create a review
+      parameters:
+      - description: With the bearer started
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Event ID
+        in: path
+        name: event_id
+        required: true
+        type: string
+      - description: Review
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/payload.CreateReviewRequest'
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/payload.CreateResponse'
+      summary: Create a review [LOGIN REQUIRED]
+      tags:
+      - reviews
+  /reviews/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a review
+      parameters:
+      - description: With the bearer started
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Review ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/payload.GeneralResponse'
+      summary: Delete a review [LOGIN REQUIRED]
+      tags:
+      - reviews
 swagger: "2.0"

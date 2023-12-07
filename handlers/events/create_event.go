@@ -17,7 +17,7 @@ import (
 // @Accept json
 // @Produce json
 // @Param body body payload.CreateEventRequest true "Event object"
-// @Success 200 {object} payload.CreateEventResponse
+// @Success 200 {object} payload.CreateResponse
 // @Router /events [post]
 func CreateEvent(c *gin.Context) {
 	var body payload.CreateEventRequest

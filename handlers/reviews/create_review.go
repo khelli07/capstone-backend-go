@@ -2,18 +2,25 @@ package reviews
 
 import (
 	"backend-go/models"
+	payload "backend-go/payload/request"
 	"backend-go/repository"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
+// CreateReview godoc
+// @Summary Create a review [LOGIN REQUIRED]
+// @Description Create a review
+// @Tags reviews
+// @Accept  json
+// @Param Authorization header string true "With the bearer started"
+// @Param event_id path string true "Event ID"
+// @Param body body payload.CreateReviewRequest true "Review"
+// @Success 201 {object} payload.CreateResponse
+// @Router /reviews/{event_id} [post]
 func CreateReview(c *gin.Context) {
-	var body struct {
-		Rating  int    `json:"rating"`
-		Comment string `json:"comment"`
-	}
-
+	var body payload.CreateReviewRequest
 	if err := c.BindJSON(&body); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
