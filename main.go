@@ -73,16 +73,17 @@ func main() {
 		event.GET("/", events.GetAllEvents)
 		event.GET("/:id", events.GetEventById)
 		event.GET("/popular", events.GetPopularEvents)
-		event.POST("/", events.CreateEvent)
+		event.POST("/", events.CreateEvent)      // TODO: Admin only
+		event.PUT("/:id", events.UpdateEvent)    // TODO: Admin + creator only
+		event.DELETE("/:id", events.DeleteEvent) // TODO: Admin + creator only
 		event.POST("/:id/join", middlewares.RequireAuth, events.JoinEvent)
-		event.PUT("/:id", events.UpdateEvent)
-		event.DELETE("/:id", events.DeleteEvent)
 	}
 
 	review := router.Group("/reviews")
 	{
 		review.GET("/:event_id", reviews.GetReviews)
 		review.POST("/:event_id", middlewares.RequireAuth, reviews.CreateReview)
+		review.DELETE("/:id", middlewares.RequireAuth, reviews.DeleteReview)
 	}
 
 	router.Run(":" + os.Getenv("PORT"))
