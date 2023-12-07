@@ -7,7 +7,6 @@ import (
 	"backend-go/handlers/reviews"
 	"backend-go/handlers/users"
 	"backend-go/middlewares"
-	"backend-go/models"
 	"backend-go/mongodb"
 	"backend-go/utils"
 	"net/http"
@@ -55,20 +54,15 @@ func main() {
 
 	auth := router.Group("/auth")
 	{
-		auth.GET("/", middlewares.RequireAuth, func(c *gin.Context) {
-			c.JSON(http.StatusOK, gin.H{
-				"message": "You are authenticated!",
-				"user":    c.MustGet("user").(models.TokenUser),
-			})
-		})
 		auth.POST("/register", users.Register)
 		auth.POST("/login", users.Login)
 	}
 
 	user := router.Group("/users")
 	{
-		user.GET("/:id", users.GetUserById)
-		user.PUT("/:id", middlewares.RequireAuth, users.UpdateUser)
+		user.GET("/", middlewares.RequireAuth, users.GetUserInfo)
+		user.PUT("/", middlewares.RequireAuth, users.UpdateUser)
+		user.GET("/:id", users.GetUserInfo)
 	}
 
 	event := router.Group("/events")

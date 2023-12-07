@@ -48,10 +48,9 @@ func Register(c *gin.Context) {
 	}
 
 	user := models.User{
-		Username:    body.Username,
-		Email:       body.Email,
-		Password:    string(hash),
-		JoinedEvent: []string{},
+		Username: body.Username,
+		Email:    body.Email,
+		Password: string(hash),
 	}
 	_, err = repository.CreateUser(&user)
 
