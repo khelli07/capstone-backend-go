@@ -54,6 +54,20 @@ func GetAllEvents() ([]models.Event, error) {
 	return events, nil
 }
 
+func QueryEvents(query bson.M) ([]models.Event, error) {
+	var events []models.Event
+	cursor, err := mongodb.EventCol.Find(mongodb.Context, query)
+	if err != nil {
+		return nil, errors.Wrap(err, "Failed to get MongoDB entities")
+	}
+
+	if err = cursor.All(mongodb.Context, &events); err != nil {
+		return nil, errors.Wrap(err, "Failed to decode MongoDB entities")
+	}
+
+	return events, nil
+}
+
 func GetPopularEvents(topK int) ([]models.Event, error) {
 	var events []models.Event
 

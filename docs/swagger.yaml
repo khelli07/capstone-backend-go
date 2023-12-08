@@ -441,6 +441,38 @@ paths:
       consumes:
       - application/json
       description: Get all events
+      parameters:
+      - description: Event name
+        in: query
+        name: name
+        type: string
+      - description: Event categories
+        example: cat1,cat2
+        in: query
+        name: categories
+        type: string
+      - description: Event locations
+        example: loc_a,loc_b
+        in: query
+        name: locations
+        type: string
+      - description: Event price start
+        in: query
+        name: price_start
+        type: string
+      - description: Event price end
+        in: query
+        name: price_end
+        type: string
+      - description: Event age limit
+        in: query
+        name: age_limit
+        type: string
+      - description: Event start time
+        example: "2023-12-02T20:00:00.000Z"
+        in: query
+        name: start_time
+        type: string
       produces:
       - application/json
       responses:

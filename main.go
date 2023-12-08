@@ -67,7 +67,7 @@ func main() {
 
 	event := router.Group("/events")
 	{
-		event.GET("/", events.GetAllEvents)
+		event.GET("/", events.GetEvents)
 		event.GET("/:id", events.GetEventById)
 		event.GET("/popular", events.GetPopularEvents)
 		event.POST("/", events.CreateEvent)      // TODO: Admin only

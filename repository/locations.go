@@ -43,11 +43,11 @@ func QueryLocation(query bson.M) ([]models.Location, error) {
 	var locations []models.Location
 	cursor, err := mongodb.LocationCol.Find(mongodb.Context, query)
 	if err != nil {
-		return locations, errors.Wrap(err, "Failed to get MongoDB entities")
+		return nil, errors.Wrap(err, "Failed to get MongoDB entities")
 	}
 
 	if err = cursor.All(mongodb.Context, &locations); err != nil {
-		return locations, errors.Wrap(err, "Failed to decode MongoDB entities")
+		return nil, errors.Wrap(err, "Failed to decode MongoDB entities")
 	}
 
 	return locations, nil

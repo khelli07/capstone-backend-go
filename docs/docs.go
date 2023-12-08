@@ -226,6 +226,53 @@ const docTemplate = `{
                     "events"
                 ],
                 "summary": "Get all events",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Event name",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "example": "cat1,cat2",
+                        "description": "Event categories",
+                        "name": "categories",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "example": "loc_a,loc_b",
+                        "description": "Event locations",
+                        "name": "locations",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Event price start",
+                        "name": "price_start",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Event price end",
+                        "name": "price_end",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Event age limit",
+                        "name": "age_limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "example": "2023-12-02T20:00:00.000Z",
+                        "description": "Event start time",
+                        "name": "start_time",
+                        "in": "query"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
