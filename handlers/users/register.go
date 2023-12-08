@@ -23,7 +23,7 @@ func Register(c *gin.Context) {
 	var body payload.RegisterRequest
 	if c.Bind(&body) != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Failed to process request body",
+			"message": "Invalid request body",
 		})
 		return
 	}
@@ -31,7 +31,7 @@ func Register(c *gin.Context) {
 	doc, err := repository.GetUserByEmail(body.Email)
 	if doc != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Email has been taken!",
+			"message": "Email has been taken!",
 		})
 		return
 	} else if err != nil && err.Error() != "User not found" {
@@ -42,7 +42,7 @@ func Register(c *gin.Context) {
 	hash, err := bcrypt.GenerateFromPassword([]byte(body.Password), bcrypt.DefaultCost)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Failed to hash password",
+			"message": "Failed to hash password",
 		})
 		return
 	}

@@ -23,5 +23,6 @@ func DeleteLocation(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
 		return
 	}
+
 	c.JSON(http.StatusOK, gin.H{"message": "Location deleted successfully"})
 }

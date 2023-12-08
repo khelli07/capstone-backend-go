@@ -1,16 +1,16 @@
 package payload
 
 type RegisterRequest struct {
-	Username string
-	Email    string
-	Password string
+	Username string `json:"username" binding:"required"`
+	Email    string `json:"email" binding:"required"`
+	Password string `json:"password" binding:"required"`
 }
 
 type LoginRequest struct {
-	Email    string
-	Password string
+	Email    string `json:"email" binding:"required"`
+	Password string `json:"password" binding:"required"`
 }
 
 type UpdateUserRequest struct {
-	Username string
+	Username string `json:"username" binding:"required"`
 }

@@ -17,7 +17,7 @@ import (
 // @Produce  json
 // @Param id path string true "Location ID"
 // @Param body body payload.UpdateLocationRequest true "Update Location"
-// @Success 200 {object} models.Location
+// @Success 200 {object} payload.GeneralResponse
 // @Router /locations/{id} [put]
 func UpdateLocation(c *gin.Context) {
 	var body payload.UpdateLocationRequest

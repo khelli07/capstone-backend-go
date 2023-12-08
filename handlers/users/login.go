@@ -25,7 +25,7 @@ func Login(c *gin.Context) {
 	var body payload.LoginRequest
 	if c.Bind(&body) != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Failed to process request body",
+			"message": "Failed to process request body",
 		})
 	}
 
@@ -44,7 +44,7 @@ func Login(c *gin.Context) {
 	err = bcrypt.CompareHashAndPassword([]byte(newUser.Password), []byte(body.Password))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Email and password mismatch",
+			"message": "Email and password mismatch",
 		})
 		return
 	}
@@ -58,7 +58,7 @@ func Login(c *gin.Context) {
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": err,
+			"message": err,
 		})
 		return
 	}

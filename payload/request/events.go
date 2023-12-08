@@ -1,29 +1,29 @@
 package payload
 
 type CreateEventRequest struct {
-	Name        string   `json:"name"`
+	Name        string   `json:"name" binding:"required"`
 	Categories  []string `json:"categories"`
-	Description string   `json:"description"`
-	Location    string   `json:"location"`
-	Price       float32  `json:"price"`
-	Capacity    int32    `json:"capacity"`
+	Description string   `json:"description" binding:"required"`
+	Location    string   `json:"location" binding:"required"`
+	Price       float32  `json:"price" binding:"required"`
+	Capacity    int32    `json:"capacity" binding:"required"`
 	Organizer   string   `json:"organizer"`
 	DressCode   string   `json:"dress_code"`
 	AgeLimit    int      `json:"age_limit"`
-	StartTime   string   `json:"start_time"`
-	EndTime     string   `json:"end_time"`
+	StartTime   string   `json:"start_time" binding:"required"`
+	EndTime     string   `json:"end_time" binding:"required"`
 }
 
 type UpdateEventRequest struct {
-	Name        string   `json:"name"`
-	Categories  []string `json:"categories"`
-	Description string   `json:"description"`
-	Location    string   `json:"location"`
-	Price       float32  `json:"price"`
-	Capacity    int32    `json:"capacity"`
-	Organizer   string   `json:"organizer"`
-	DressCode   string   `json:"dress_code"`
-	AgeLimit    int      `json:"age_limit"`
-	StartTime   string   `json:"start_time"`
-	EndTime     string   `json:"end_time"`
+	Name        string   `json:"name" binding:"required"`
+	Categories  []string `json:"categories" binding:"required"`
+	Description string   `json:"description" binding:"required"`
+	Location    string   `json:"location" binding:"required"`
+	Price       float32  `json:"price" binding:"required"`
+	Capacity    int32    `json:"capacity" binding:"required"`
+	Organizer   string   `json:"organizer" binding:"required"`
+	DressCode   string   `json:"dress_code" binding:"required"`
+	AgeLimit    int      `json:"age_limit" binding:"required"`
+	StartTime   string   `json:"start_time" binding:"required"`
+	EndTime     string   `json:"end_time" binding:"required"`
 }

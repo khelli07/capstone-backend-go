@@ -85,7 +85,7 @@ func main() {
 
 	category := router.Group("/categories")
 	{
-		category.GET("/", categories.GetAllCategories)
+		category.GET("/", categories.GetCategories)
 		category.POST("/", categories.CreateCategory)
 		category.PUT("/:id", categories.UpdateCategory)
 		category.DELETE("/:id", categories.DeleteCategory)

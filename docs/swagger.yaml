@@ -1,5 +1,16 @@
 basePath: /
 definitions:
+  models.Category:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      updated_at:
+        type: string
+    type: object
   models.Event:
     properties:
       age_limit:
@@ -98,6 +109,13 @@ definitions:
       username:
         type: string
     type: object
+  payload.CreateCategoryRequest:
+    properties:
+      name:
+        type: string
+    required:
+    - name
+    type: object
   payload.CreateEventRequest:
     properties:
       age_limit:
@@ -124,6 +142,14 @@ definitions:
         type: number
       start_time:
         type: string
+    required:
+    - capacity
+    - description
+    - end_time
+    - location
+    - name
+    - price
+    - start_time
     type: object
   payload.CreateLocationRequest:
     properties:
@@ -146,11 +172,21 @@ definitions:
         type: string
       rating:
         type: integer
+    required:
+    - comment
+    - rating
     type: object
   payload.GeneralResponse:
     properties:
       message:
         type: string
+    type: object
+  payload.GetCategoriesResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/models.Category'
+        type: array
     type: object
   payload.GetEventsResponse:
     properties:
@@ -181,6 +217,9 @@ definitions:
         type: string
       password:
         type: string
+    required:
+    - email
+    - password
     type: object
   payload.LoginResponse:
     properties:
@@ -195,6 +234,17 @@ definitions:
         type: string
       username:
         type: string
+    required:
+    - email
+    - password
+    - username
+    type: object
+  payload.UpdateCategoryRequest:
+    properties:
+      name:
+        type: string
+    required:
+    - name
     type: object
   payload.UpdateEventRequest:
     properties:
@@ -222,6 +272,18 @@ definitions:
         type: number
       start_time:
         type: string
+    required:
+    - age_limit
+    - capacity
+    - categories
+    - description
+    - dress_code
+    - end_time
+    - location
+    - name
+    - organizer
+    - price
+    - start_time
     type: object
   payload.UpdateLocationRequest:
     properties:
@@ -234,6 +296,8 @@ definitions:
     properties:
       username:
         type: string
+    required:
+    - username
     type: object
 host: localhost:9999
 info:
@@ -289,6 +353,89 @@ paths:
       summary: Register a new user
       tags:
       - users
+  /categories:
+    get:
+      consumes:
+      - application/json
+      description: Get all categories
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/payload.GetCategoriesResponse'
+      summary: Get all categories
+      tags:
+      - categories
+    post:
+      consumes:
+      - application/json
+      description: Create a new category
+      parameters:
+      - description: Create Category
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/payload.CreateCategoryRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/payload.CreateResponse'
+      summary: Create a new category
+      tags:
+      - categories
+  /categories/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a category
+      parameters:
+      - description: Category ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/payload.GeneralResponse'
+      summary: Delete a category
+      tags:
+      - categories
+    put:
+      consumes:
+      - application/json
+      description: Update a category
+      parameters:
+      - description: Category ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Update Category
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/payload.UpdateCategoryRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/payload.GeneralResponse'
+      summary: Update a category
+      tags:
+      - categories
   /events:
     get:
       consumes:
@@ -520,7 +667,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.Location'
+            $ref: '#/definitions/payload.GeneralResponse'
       summary: Update a location
       tags:
       - locations
