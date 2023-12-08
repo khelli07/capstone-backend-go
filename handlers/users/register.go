@@ -20,6 +20,8 @@ import (
 // @Success 200 {object} payload.GeneralResponse
 // @Router /auth/register [post]
 func Register(c *gin.Context) {
+	c.Header("Content-Type", "application/json")
+
 	var body payload.RegisterRequest
 	if c.Bind(&body) != nil {
 		c.JSON(http.StatusBadRequest, gin.H{

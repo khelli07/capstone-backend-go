@@ -20,6 +20,8 @@ import (
 // @Success 200 {object} payload.GeneralResponse
 // @Router /categories/{id} [put]
 func UpdateCategory(c *gin.Context) {
+	c.Header("Content-Type", "application/json")
+
 	var body payload.UpdateCategoryRequest
 	if err := c.ShouldBindJSON(&body); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{

@@ -17,6 +17,8 @@ import (
 // @Success 200 {object} payload.GeneralResponse
 // @Router /events/{id} [delete]
 func DeleteEvent(c *gin.Context) {
+	c.Header("Content-Type", "application/json")
+
 	id := c.Param("id")
 	err := repository.DeleteEvent(id)
 	if err != nil {

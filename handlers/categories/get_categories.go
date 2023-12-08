@@ -17,6 +17,8 @@ import (
 // @Success 200 {object} payload.GetCategoriesResponse
 // @Router /categories [get]
 func GetCategories(c *gin.Context) {
+	c.Header("Content-Type", "application/json")
+
 	var categories []models.Category
 	categories, err := repository.GetAllCategories()
 	if err != nil {

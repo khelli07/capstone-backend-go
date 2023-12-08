@@ -17,6 +17,8 @@ import (
 // @Success 200 {object} models.User
 // @Router /users/{id} [get]
 func GetUserById(c *gin.Context) {
+	c.Header("Content-Type", "application/json")
+
 	id := c.Param("id")
 	entity, err := repository.GetUserById(id)
 	if err != nil {

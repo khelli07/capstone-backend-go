@@ -20,6 +20,8 @@ import (
 // @Success 200 {object} payload.GetEventsResponse
 // @Router /events/popular [get]
 func GetPopularEvents(c *gin.Context) {
+	c.Header("Content-Type", "application/json")
+
 	topK := c.Params.ByName("topK")
 	if topK == "" {
 		topK = "10"

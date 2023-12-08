@@ -19,6 +19,8 @@ import (
 // @Success 201 {object} payload.CreateResponse
 // @Router /locations [post]
 func CreateLocation(c *gin.Context) {
+	c.Header("Content-Type", "application/json")
+
 	var body payload.CreateLocationRequest
 	if err := c.BindJSON(&body); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})

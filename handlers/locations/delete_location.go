@@ -17,6 +17,8 @@ import (
 // @Success 200 {object} payload.GeneralResponse
 // @Router /locations/{id} [delete]
 func DeleteLocation(c *gin.Context) {
+	c.Header("Content-Type", "application/json")
+
 	id := c.Param("id")
 	err := repository.DeleteLocation(id)
 	if err != nil {

@@ -21,6 +21,8 @@ import (
 // @Success 200 {object} payload.GeneralResponse
 // @Router /events/{id} [put]
 func UpdateEvent(c *gin.Context) {
+	c.Header("Content-Type", "application/json")
+
 	var body payload.UpdateEventRequest
 	if err := c.ShouldBindJSON(&body); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{

@@ -17,6 +17,8 @@ import (
 // @Success 200 {object} payload.GeneralResponse
 // @Router /categories/{id} [delete]
 func DeleteCategory(c *gin.Context) {
+	c.Header("Content-Type", "application/json")
+
 	id := c.Param("id")
 	err := repository.DeleteCategory(id)
 	if err != nil {

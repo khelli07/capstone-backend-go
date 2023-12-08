@@ -22,6 +22,8 @@ import (
 // @Success 200 {object} payload.LoginResponse
 // @Router /auth/login [post]
 func Login(c *gin.Context) {
+	c.Header("Content-Type", "application/json")
+
 	var body payload.LoginRequest
 	if c.Bind(&body) != nil {
 		c.JSON(http.StatusBadRequest, gin.H{

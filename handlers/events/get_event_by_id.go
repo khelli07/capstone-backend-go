@@ -17,6 +17,8 @@ import (
 // @Success 200 {object} models.Event
 // @Router /events/{id} [get]
 func GetEventById(c *gin.Context) {
+	c.Header("Content-Type", "application/json")
+
 	id := c.Param("id")
 	entity, err := repository.GetEventById(id)
 	if err != nil {

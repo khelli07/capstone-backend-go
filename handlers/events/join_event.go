@@ -18,6 +18,8 @@ import (
 // @Success 200 {object} payload.GeneralResponse
 // @Router /events/{id}/join [post]
 func JoinEvent(c *gin.Context) {
+	c.Header("Content-Type", "application/json")
+
 	eventID := c.Param("id")
 	event, err := repository.GetEventById(eventID)
 	if err != nil {

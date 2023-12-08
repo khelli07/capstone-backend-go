@@ -20,6 +20,8 @@ import (
 // @Success 200 {object} payload.GeneralResponse
 // @Router /users [put]
 func UpdateUser(c *gin.Context) {
+	c.Header("Content-Type", "application/json")
+
 	var body payload.UpdateUserRequest
 	if err := c.ShouldBindJSON(&body); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{

@@ -16,6 +16,8 @@ import (
 // @Success 200 {object} payload.GetReviewsResponse
 // @Router /reviews/{event_id} [get]
 func GetReviews(c *gin.Context) {
+	c.Header("Content-Type", "application/json")
+
 	id := c.Param("event_id")
 
 	reviews, err := repository.GetReviews(id)

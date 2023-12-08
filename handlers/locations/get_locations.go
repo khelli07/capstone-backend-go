@@ -21,6 +21,8 @@ import (
 // @Success 200 {object} payload.GetLocationsResponse
 // @Router /locations [get]
 func GetLocations(c *gin.Context) {
+	c.Header("Content-Type", "application/json")
+
 	level := c.Query("level")
 	query := bson.M{}
 	if level != "" {

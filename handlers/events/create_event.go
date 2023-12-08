@@ -20,24 +20,11 @@ import (
 // @Success 200 {object} payload.CreateResponse
 // @Router /events [post]
 func CreateEvent(c *gin.Context) {
+	c.Header("Content-Type", "application/json")
+
 	var body payload.CreateEventRequest
 	if err := c.BindJSON(&body); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
-		return
-	}
-
-	if body.Name == "" || body.Description == "" || body.Location == "" || body.Price == 0 || body.Capacity == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"message": "name, description, location, price, and capacity must not be empty"})
-		return
-	}
-
-	if body.Price < 0 || body.Capacity < 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"message": "price and capacity must be positive"})
-		return
-	}
-
-	if body.StartTime == "" || body.EndTime == "" {
-		c.JSON(http.StatusBadRequest, gin.H{"message": "missing time range"})
 		return
 	}
 

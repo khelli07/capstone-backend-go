@@ -18,6 +18,8 @@ import (
 // @Success 200 {object} payload.GeneralResponse
 // @Router /reviews/{id} [delete]
 func DeleteReview(c *gin.Context) {
+	c.Header("Content-Type", "application/json")
+
 	id := c.Param("id")
 	review, err := repository.GetReviewById(id)
 	if err != nil {

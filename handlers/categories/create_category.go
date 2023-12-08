@@ -19,6 +19,8 @@ import (
 // @Success 201 {object} payload.CreateResponse
 // @Router /categories [post]
 func CreateCategory(c *gin.Context) {
+	c.Header("Content-Type", "application/json")
+
 	var body payload.CreateCategoryRequest
 	if err := c.BindJSON(&body); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
