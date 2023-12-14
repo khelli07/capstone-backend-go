@@ -16,6 +16,7 @@ type Event struct {
 	Price       float32            `bson:"price" json:"price"`
 	Capacity    int32              `bson:"capacity" json:"capacity"`
 	// non-mandatory fields
+	ImageURL   string `bson:"image_url" json:"image_url"`
 	Organizer  string `bson:"organizer" json:"organizer"`
 	DressCode  string `bson:"dress_code" json:"dress_code"`
 	AgeLimit   int    `bson:"age_limit" json:"age_limit"`

@@ -104,6 +104,23 @@ func UpdateEvent(id string, event *models.Event) (*mongo.UpdateResult, error) {
 	return result, nil
 }
 
+func UpdateEventImageURL(id string, imageURL string) error {
+	objectID, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return errors.Wrap(err, "Failed to convert ID to ObjectID")
+	}
+
+	filter := bson.M{"_id": objectID}
+	update := bson.M{"$set": bson.M{"image_url": imageURL}}
+
+	_, err = mongodb.EventCol.UpdateOne(mongodb.Context, filter, update)
+	if err != nil {
+		return errors.Wrap(err, "Failed to update MongoDB entity")
+	}
+
+	return nil
+}
+
 func DeleteEvent(id string) error {
 	objectID, err := primitive.ObjectIDFromHex(id)
 	if err != nil {

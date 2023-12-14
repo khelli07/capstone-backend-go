@@ -25,6 +25,7 @@ import (
 
 func init() {
 	utils.LoadEnv()
+	utils.InitGCS()
 	mongodb.ConnectDB()
 	mongodb.InitCollections()
 }
@@ -74,6 +75,7 @@ func main() {
 		event.PUT("/:id", events.UpdateEvent)    // TODO: Admin + creator only
 		event.DELETE("/:id", events.DeleteEvent) // TODO: Admin + creator only
 		event.POST("/:id/join", middlewares.RequireAuth, events.JoinEvent)
+		event.POST("/:id/image", events.UploadImage) // TODO: Admin only
 	}
 
 	review := router.Group("/reviews")
