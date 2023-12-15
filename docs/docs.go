@@ -447,6 +447,45 @@ const docTemplate = `{
                 }
             }
         },
+        "/events/{id}/image": {
+            "post": {
+                "description": "Upload an image",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "events"
+                ],
+                "summary": "Upload an image",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Event ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "file",
+                        "description": "Image file",
+                        "name": "image",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/payload.UploadImageResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/events/{id}/join": {
             "post": {
                 "description": "Join an event",
@@ -881,6 +920,10 @@ const docTemplate = `{
                 "id": {
                     "type": "string"
                 },
+                "image_url": {
+                    "description": "non-mandatory fields",
+                    "type": "string"
+                },
                 "location": {
                     "type": "string"
                 },
@@ -888,7 +931,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "organizer": {
-                    "description": "non-mandatory fields",
                     "type": "string"
                 },
                 "participants": {
@@ -1008,54 +1050,7 @@ const docTemplate = `{
             }
         },
         "payload.CreateEventRequest": {
-            "type": "object",
-            "required": [
-                "capacity",
-                "description",
-                "end_time",
-                "location",
-                "name",
-                "price",
-                "start_time"
-            ],
-            "properties": {
-                "age_limit": {
-                    "type": "integer"
-                },
-                "capacity": {
-                    "type": "integer"
-                },
-                "categories": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "description": {
-                    "type": "string"
-                },
-                "dress_code": {
-                    "type": "string"
-                },
-                "end_time": {
-                    "type": "string"
-                },
-                "location": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "organizer": {
-                    "type": "string"
-                },
-                "price": {
-                    "type": "number"
-                },
-                "start_time": {
-                    "type": "string"
-                }
-            }
+            "type": "object"
         },
         "payload.CreateLocationRequest": {
             "type": "object",
@@ -1275,6 +1270,14 @@ const docTemplate = `{
             ],
             "properties": {
                 "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "payload.UploadImageResponse": {
+            "type": "object",
+            "properties": {
+                "url": {
                     "type": "string"
                 }
             }

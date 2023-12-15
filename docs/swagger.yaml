@@ -32,12 +32,14 @@ definitions:
         type: string
       id:
         type: string
+      image_url:
+        description: non-mandatory fields
+        type: string
       location:
         type: string
       name:
         type: string
       organizer:
-        description: non-mandatory fields
         type: string
       participants:
         items:
@@ -117,39 +119,6 @@ definitions:
     - name
     type: object
   payload.CreateEventRequest:
-    properties:
-      age_limit:
-        type: integer
-      capacity:
-        type: integer
-      categories:
-        items:
-          type: string
-        type: array
-      description:
-        type: string
-      dress_code:
-        type: string
-      end_time:
-        type: string
-      location:
-        type: string
-      name:
-        type: string
-      organizer:
-        type: string
-      price:
-        type: number
-      start_time:
-        type: string
-    required:
-    - capacity
-    - description
-    - end_time
-    - location
-    - name
-    - price
-    - start_time
     type: object
   payload.CreateLocationRequest:
     properties:
@@ -298,6 +267,11 @@ definitions:
         type: string
     required:
     - username
+    type: object
+  payload.UploadImageResponse:
+    properties:
+      url:
+        type: string
     type: object
 host: localhost:9999
 info:
@@ -569,6 +543,32 @@ paths:
           schema:
             $ref: '#/definitions/payload.GeneralResponse'
       summary: Update an event
+      tags:
+      - events
+  /events/{id}/image:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Upload an image
+      parameters:
+      - description: Event ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Image file
+        in: formData
+        name: image
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/payload.UploadImageResponse'
+      summary: Upload an image
       tags:
       - events
   /events/{id}/join:

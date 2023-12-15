@@ -9,6 +9,16 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// UploadImage godoc
+// @Summary Upload an image
+// @Description Upload an image
+// @Tags events
+// @Accept mpfd
+// @Produce json
+// @Param id path string true "Event ID"
+// @Param image formData file true "Image file"
+// @Success 200 {object} payload.UploadImageResponse
+// @Router /events/{id}/image [post]
 func UploadImage(c *gin.Context) {
 	c.Header("Content-Type", "application/json")
 

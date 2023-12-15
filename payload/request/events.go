@@ -1,6 +1,8 @@
 package payload
 
-type CreateEventRequest struct {
+import "mime/multipart"
+
+type CreateEventData struct {
 	Name        string   `json:"name" binding:"required"`
 	Categories  []string `json:"categories"`
 	Description string   `json:"description" binding:"required"`
@@ -12,6 +14,11 @@ type CreateEventRequest struct {
 	AgeLimit    int      `json:"age_limit"`
 	StartTime   string   `json:"start_time" binding:"required"`
 	EndTime     string   `json:"end_time" binding:"required"`
+}
+
+type CreateEventRequest struct {
+	Image *multipart.FileHeader `form:"image" binding:"required"`
+	Data  CreateEventData       `form:"data" binding:"required"`
 }
 
 type UpdateEventRequest struct {

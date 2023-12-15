@@ -4,6 +4,9 @@ import (
 	"backend-go/models"
 	payload "backend-go/payload/request"
 	"backend-go/repository"
+	"backend-go/utils"
+	"fmt"
+	"log"
 	"net/http"
 	"time"
 
@@ -22,12 +25,15 @@ import (
 func CreateEvent(c *gin.Context) {
 	c.Header("Content-Type", "application/json")
 
-	var body payload.CreateEventRequest
-	if err := c.BindJSON(&body); err != nil {
+	var bodyForm payload.CreateEventRequest
+	if err := c.Bind(&bodyForm); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
 
+	log.Println(bodyForm)
+
+	body := bodyForm.Data
 	layout := "2006-01-02T15:04:05.000Z"
 	startTime, err := time.Parse(layout, body.StartTime)
 	if err != nil {
@@ -46,6 +52,21 @@ func CreateEvent(c *gin.Context) {
 		return
 	}
 
+	f, uploadedFile, err := c.Request.FormFile("image")
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+		return
+	}
+	defer f.Close()
+
+	fileName, err := utils.UploadFile(f, uploadedFile)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+		return
+	}
+
+	imageUrl := fmt.Sprintf("%s%s", "https://storage.googleapis.com", fileName)
+
 	var event = models.Event{
 		Name:        body.Name,
 		StartTime:   startTime,
@@ -55,6 +76,7 @@ func CreateEvent(c *gin.Context) {
 		Location:    body.Location,
 		Price:       body.Price,
 		Capacity:    body.Capacity,
+		ImageURL:    imageUrl,
 		Organizer:   body.Organizer,
 		DressCode:   body.DressCode,
 		AgeLimit:    body.AgeLimit,
