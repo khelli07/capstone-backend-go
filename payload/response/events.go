@@ -6,6 +6,6 @@ type GetEventsResponse struct {
 	Data []models.Event `json:"data"`
 }
 
-type UploadImageResponse struct {
+type UploadEventImageResponse struct {
 	URL string `json:"url"`
 }

@@ -6,7 +6,6 @@ import (
 	"backend-go/repository"
 	"backend-go/utils"
 	"fmt"
-	"log"
 	"net/http"
 	"time"
 
@@ -15,11 +14,12 @@ import (
 
 // CreateEvent godoc
 // @Summary Create an event
-// @Description Create an event
+// @Description Create an event.
 // @Tags events
-// @Accept json
+// @Accept  multipart/form-data
 // @Produce json
-// @Param body body payload.CreateEventRequest true "Event object"
+// @Param image formData file true "Image"
+// @Param data body payload.CreateEventData true "The event data is JSON in string."
 // @Success 200 {object} payload.CreateResponse
 // @Router /events [post]
 func CreateEvent(c *gin.Context) {
@@ -30,8 +30,6 @@ func CreateEvent(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
-
-	log.Println(bodyForm)
 
 	body := bodyForm.Data
 	layout := "2006-01-02T15:04:05.000Z"

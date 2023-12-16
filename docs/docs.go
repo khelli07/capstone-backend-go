@@ -283,9 +283,9 @@ const docTemplate = `{
                 }
             },
             "post": {
-                "description": "Create an event",
+                "description": "Create an event.",
                 "consumes": [
-                    "application/json"
+                    "multipart/form-data"
                 ],
                 "produces": [
                     "application/json"
@@ -296,12 +296,19 @@ const docTemplate = `{
                 "summary": "Create an event",
                 "parameters": [
                     {
-                        "description": "Event object",
-                        "name": "body",
+                        "type": "file",
+                        "description": "Image",
+                        "name": "image",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "description": "The event data is JSON in string.",
+                        "name": "data",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/payload.CreateEventRequest"
+                            "$ref": "#/definitions/payload.CreateEventData"
                         }
                     }
                 ],
@@ -480,7 +487,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/payload.UploadImageResponse"
+                            "$ref": "#/definitions/payload.UploadEventImageResponse"
                         }
                     }
                 }
@@ -1049,8 +1056,55 @@ const docTemplate = `{
                 }
             }
         },
-        "payload.CreateEventRequest": {
-            "type": "object"
+        "payload.CreateEventData": {
+            "type": "object",
+            "required": [
+                "capacity",
+                "description",
+                "end_time",
+                "location",
+                "name",
+                "price",
+                "start_time"
+            ],
+            "properties": {
+                "age_limit": {
+                    "type": "integer"
+                },
+                "capacity": {
+                    "type": "integer"
+                },
+                "categories": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "description": {
+                    "type": "string"
+                },
+                "dress_code": {
+                    "type": "string"
+                },
+                "end_time": {
+                    "type": "string"
+                },
+                "location": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "organizer": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "number"
+                },
+                "start_time": {
+                    "type": "string"
+                }
+            }
         },
         "payload.CreateLocationRequest": {
             "type": "object",
@@ -1274,7 +1328,7 @@ const docTemplate = `{
                 }
             }
         },
-        "payload.UploadImageResponse": {
+        "payload.UploadEventImageResponse": {
             "type": "object",
             "properties": {
                 "url": {

@@ -118,7 +118,40 @@ definitions:
     required:
     - name
     type: object
-  payload.CreateEventRequest:
+  payload.CreateEventData:
+    properties:
+      age_limit:
+        type: integer
+      capacity:
+        type: integer
+      categories:
+        items:
+          type: string
+        type: array
+      description:
+        type: string
+      dress_code:
+        type: string
+      end_time:
+        type: string
+      location:
+        type: string
+      name:
+        type: string
+      organizer:
+        type: string
+      price:
+        type: number
+      start_time:
+        type: string
+    required:
+    - capacity
+    - description
+    - end_time
+    - location
+    - name
+    - price
+    - start_time
     type: object
   payload.CreateLocationRequest:
     properties:
@@ -268,7 +301,7 @@ definitions:
     required:
     - username
     type: object
-  payload.UploadImageResponse:
+  payload.UploadEventImageResponse:
     properties:
       url:
         type: string
@@ -459,15 +492,20 @@ paths:
       - events
     post:
       consumes:
-      - application/json
-      description: Create an event
+      - multipart/form-data
+      description: Create an event.
       parameters:
-      - description: Event object
+      - description: Image
+        in: formData
+        name: image
+        required: true
+        type: file
+      - description: The event data is JSON in string.
         in: body
-        name: body
+        name: data
         required: true
         schema:
-          $ref: '#/definitions/payload.CreateEventRequest'
+          $ref: '#/definitions/payload.CreateEventData'
       produces:
       - application/json
       responses:
@@ -567,7 +605,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/payload.UploadImageResponse'
+            $ref: '#/definitions/payload.UploadEventImageResponse'
       summary: Upload an image
       tags:
       - events
