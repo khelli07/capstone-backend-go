@@ -1,6 +1,6 @@
 package payload
 
 type CreateReviewRequest struct {
-	Rating  int    `json:"rating" binding:"required"`
-	Comment string `json:"comment" binding:"required"`
+	Rating  int    `form:"rating" binding:"required"`
+	Comment string `form:"comment" binding:"required"`
 }

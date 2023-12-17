@@ -13,17 +13,17 @@ import (
 // @Summary Update a user
 // @Description Update a user
 // @Tags users
-// @Accept  json
+// @Accept  x-www-form-urlencoded
 // @Produce  json
 // @Param Authorization header string true "With the bearer started"
-// @Param body body payload.UpdateUserRequest true "User"
+// @Param body formData payload.UpdateUserRequest true "User"
 // @Success 200 {object} payload.GeneralResponse
 // @Router /users [put]
 func UpdateUser(c *gin.Context) {
 	c.Header("Content-Type", "application/json")
 
 	var body payload.UpdateUserRequest
-	if err := c.ShouldBindJSON(&body); err != nil {
+	if err := c.ShouldBind(&body); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "Invalid request body",
 		})

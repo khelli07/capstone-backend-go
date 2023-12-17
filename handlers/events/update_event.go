@@ -14,17 +14,17 @@ import (
 // @Summary Update an event
 // @Description Update an event
 // @Tags events
-// @Accept  json
+// @Accept  x-www-form-urlencoded
 // @Produce  json
 // @Param id path string true "Event ID"
-// @Param body body payload.UpdateEventRequest true "Event"
+// @Param body formData payload.UpdateEventRequest true "Event"
 // @Success 200 {object} payload.GeneralResponse
 // @Router /events/{id} [put]
 func UpdateEvent(c *gin.Context) {
 	c.Header("Content-Type", "application/json")
 
 	var body payload.UpdateEventRequest
-	if err := c.ShouldBindJSON(&body); err != nil {
+	if err := c.ShouldBind(&body); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "Invalid request body",
 		})

@@ -13,7 +13,7 @@ import (
 // @Summary Upload an image
 // @Description Upload an image
 // @Tags events
-// @Accept mpfd
+// @Accept multipart/form-data
 // @Produce json
 // @Param id path string true "Event ID"
 // @Param image formData file true "Image file"

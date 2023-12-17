@@ -23,7 +23,7 @@ const docTemplate = `{
             "post": {
                 "description": "Login",
                 "consumes": [
-                    "application/json"
+                    "application/x-www-form-urlencoded"
                 ],
                 "produces": [
                     "application/json"
@@ -34,13 +34,16 @@ const docTemplate = `{
                 "summary": "Login",
                 "parameters": [
                     {
-                        "description": "Login",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/payload.LoginRequest"
-                        }
+                        "type": "string",
+                        "name": "email",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "name": "password",
+                        "in": "formData",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -57,7 +60,7 @@ const docTemplate = `{
             "post": {
                 "description": "Register a new user",
                 "consumes": [
-                    "application/json"
+                    "application/x-www-form-urlencoded"
                 ],
                 "produces": [
                     "application/json"
@@ -68,13 +71,22 @@ const docTemplate = `{
                 "summary": "Register a new user",
                 "parameters": [
                     {
-                        "description": "User",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/payload.RegisterRequest"
-                        }
+                        "type": "string",
+                        "name": "email",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "name": "password",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "name": "username",
+                        "in": "formData",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -297,19 +309,78 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "file",
-                        "description": "Image",
+                        "description": "Image file",
                         "name": "image",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "age_limit",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "capacity",
                         "in": "formData",
                         "required": true
                     },
                     {
-                        "description": "The event data is JSON in string.",
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/payload.CreateEventData"
-                        }
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "csv",
+                        "description": "Example: cat1,cat2",
+                        "name": "categories",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "name": "description",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "name": "dress_code",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Example: 2023-12-01T20:00:00.000Z",
+                        "name": "end_time",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "name": "location",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "name": "name",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "name": "organizer",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "number",
+                        "name": "price",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Example: 2023-12-01T20:00:00.000Z",
+                        "name": "start_time",
+                        "in": "formData",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -387,7 +458,7 @@ const docTemplate = `{
             "put": {
                 "description": "Update an event",
                 "consumes": [
-                    "application/json"
+                    "application/x-www-form-urlencoded"
                 ],
                 "produces": [
                     "application/json"
@@ -405,13 +476,77 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "description": "Event",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/payload.UpdateEventRequest"
-                        }
+                        "type": "integer",
+                        "name": "age_limit",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "name": "capacity",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "csv",
+                        "description": "Example: cat1,cat2",
+                        "name": "categories",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "name": "description",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "name": "dress_code",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Example: 2023-12-01T20:00:00.000Z",
+                        "name": "end_time",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "name": "location",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "name": "name",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "name": "organizer",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "number",
+                        "name": "price",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Example: 2023-12-01T20:00:00.000Z",
+                        "name": "start_time",
+                        "in": "formData",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -697,7 +832,7 @@ const docTemplate = `{
             "post": {
                 "description": "Create a review",
                 "consumes": [
-                    "application/json"
+                    "application/x-www-form-urlencoded"
                 ],
                 "tags": [
                     "reviews"
@@ -719,13 +854,16 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "description": "Review",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/payload.CreateReviewRequest"
-                        }
+                        "type": "string",
+                        "name": "comment",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "name": "rating",
+                        "in": "formData",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -808,7 +946,7 @@ const docTemplate = `{
             "put": {
                 "description": "Update a user",
                 "consumes": [
-                    "application/json"
+                    "application/x-www-form-urlencoded"
                 ],
                 "produces": [
                     "application/json"
@@ -826,13 +964,10 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "description": "User",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/payload.UpdateUserRequest"
-                        }
+                        "type": "string",
+                        "name": "username",
+                        "in": "formData",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -1056,56 +1191,6 @@ const docTemplate = `{
                 }
             }
         },
-        "payload.CreateEventData": {
-            "type": "object",
-            "required": [
-                "capacity",
-                "description",
-                "end_time",
-                "location",
-                "name",
-                "price",
-                "start_time"
-            ],
-            "properties": {
-                "age_limit": {
-                    "type": "integer"
-                },
-                "capacity": {
-                    "type": "integer"
-                },
-                "categories": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "description": {
-                    "type": "string"
-                },
-                "dress_code": {
-                    "type": "string"
-                },
-                "end_time": {
-                    "type": "string"
-                },
-                "location": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "organizer": {
-                    "type": "string"
-                },
-                "price": {
-                    "type": "number"
-                },
-                "start_time": {
-                    "type": "string"
-                }
-            }
-        },
         "payload.CreateLocationRequest": {
             "type": "object",
             "required": [
@@ -1126,21 +1211,6 @@ const docTemplate = `{
             "properties": {
                 "id": {
                     "type": "string"
-                }
-            }
-        },
-        "payload.CreateReviewRequest": {
-            "type": "object",
-            "required": [
-                "comment",
-                "rating"
-            ],
-            "properties": {
-                "comment": {
-                    "type": "string"
-                },
-                "rating": {
-                    "type": "integer"
                 }
             }
         },
@@ -1199,44 +1269,10 @@ const docTemplate = `{
                 }
             }
         },
-        "payload.LoginRequest": {
-            "type": "object",
-            "required": [
-                "email",
-                "password"
-            ],
-            "properties": {
-                "email": {
-                    "type": "string"
-                },
-                "password": {
-                    "type": "string"
-                }
-            }
-        },
         "payload.LoginResponse": {
             "type": "object",
             "properties": {
                 "token": {
-                    "type": "string"
-                }
-            }
-        },
-        "payload.RegisterRequest": {
-            "type": "object",
-            "required": [
-                "email",
-                "password",
-                "username"
-            ],
-            "properties": {
-                "email": {
-                    "type": "string"
-                },
-                "password": {
-                    "type": "string"
-                },
-                "username": {
                     "type": "string"
                 }
             }
@@ -1252,60 +1288,6 @@ const docTemplate = `{
                 }
             }
         },
-        "payload.UpdateEventRequest": {
-            "type": "object",
-            "required": [
-                "age_limit",
-                "capacity",
-                "categories",
-                "description",
-                "dress_code",
-                "end_time",
-                "location",
-                "name",
-                "organizer",
-                "price",
-                "start_time"
-            ],
-            "properties": {
-                "age_limit": {
-                    "type": "integer"
-                },
-                "capacity": {
-                    "type": "integer"
-                },
-                "categories": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "description": {
-                    "type": "string"
-                },
-                "dress_code": {
-                    "type": "string"
-                },
-                "end_time": {
-                    "type": "string"
-                },
-                "location": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "organizer": {
-                    "type": "string"
-                },
-                "price": {
-                    "type": "number"
-                },
-                "start_time": {
-                    "type": "string"
-                }
-            }
-        },
         "payload.UpdateLocationRequest": {
             "type": "object",
             "properties": {
@@ -1313,17 +1295,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "name": {
-                    "type": "string"
-                }
-            }
-        },
-        "payload.UpdateUserRequest": {
-            "type": "object",
-            "required": [
-                "username"
-            ],
-            "properties": {
-                "username": {
                     "type": "string"
                 }
             }

@@ -14,16 +14,16 @@ import (
 // @Summary Register a new user
 // @Description Register a new user
 // @Tags users
-// @Accept  json
+// @Accept  x-www-form-urlencoded
 // @Produce  json
-// @Param body body payload.RegisterRequest true "User"
+// @Param body formData payload.RegisterRequest true "User"
 // @Success 200 {object} payload.GeneralResponse
 // @Router /auth/register [post]
 func Register(c *gin.Context) {
 	c.Header("Content-Type", "application/json")
 
 	var body payload.RegisterRequest
-	if c.Bind(&body) != nil {
+	if c.ShouldBind(&body) != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "Invalid request body",
 		})

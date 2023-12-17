@@ -16,16 +16,16 @@ import (
 // @Summary Login
 // @Description Login
 // @Tags users
-// @Accept  json
+// @Accept  x-www-form-urlencoded
 // @Produce  json
-// @Param body body payload.LoginRequest true "Login"
+// @Param body formData payload.LoginRequest true "Login"
 // @Success 200 {object} payload.LoginResponse
 // @Router /auth/login [post]
 func Login(c *gin.Context) {
 	c.Header("Content-Type", "application/json")
 
 	var body payload.LoginRequest
-	if c.Bind(&body) != nil {
+	if c.ShouldBind(&body) != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "Failed to process request body",
 		})

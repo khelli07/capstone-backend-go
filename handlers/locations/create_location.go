@@ -22,7 +22,7 @@ func CreateLocation(c *gin.Context) {
 	c.Header("Content-Type", "application/json")
 
 	var body payload.CreateLocationRequest
-	if err := c.BindJSON(&body); err != nil {
+	if err := c.ShouldBindJSON(&body); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}

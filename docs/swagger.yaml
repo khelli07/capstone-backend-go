@@ -118,41 +118,6 @@ definitions:
     required:
     - name
     type: object
-  payload.CreateEventData:
-    properties:
-      age_limit:
-        type: integer
-      capacity:
-        type: integer
-      categories:
-        items:
-          type: string
-        type: array
-      description:
-        type: string
-      dress_code:
-        type: string
-      end_time:
-        type: string
-      location:
-        type: string
-      name:
-        type: string
-      organizer:
-        type: string
-      price:
-        type: number
-      start_time:
-        type: string
-    required:
-    - capacity
-    - description
-    - end_time
-    - location
-    - name
-    - price
-    - start_time
-    type: object
   payload.CreateLocationRequest:
     properties:
       level:
@@ -167,16 +132,6 @@ definitions:
     properties:
       id:
         type: string
-    type: object
-  payload.CreateReviewRequest:
-    properties:
-      comment:
-        type: string
-      rating:
-        type: integer
-    required:
-    - comment
-    - rating
     type: object
   payload.GeneralResponse:
     properties:
@@ -213,33 +168,10 @@ definitions:
           $ref: '#/definitions/models.Review'
         type: array
     type: object
-  payload.LoginRequest:
-    properties:
-      email:
-        type: string
-      password:
-        type: string
-    required:
-    - email
-    - password
-    type: object
   payload.LoginResponse:
     properties:
       token:
         type: string
-    type: object
-  payload.RegisterRequest:
-    properties:
-      email:
-        type: string
-      password:
-        type: string
-      username:
-        type: string
-    required:
-    - email
-    - password
-    - username
     type: object
   payload.UpdateCategoryRequest:
     properties:
@@ -248,58 +180,12 @@ definitions:
     required:
     - name
     type: object
-  payload.UpdateEventRequest:
-    properties:
-      age_limit:
-        type: integer
-      capacity:
-        type: integer
-      categories:
-        items:
-          type: string
-        type: array
-      description:
-        type: string
-      dress_code:
-        type: string
-      end_time:
-        type: string
-      location:
-        type: string
-      name:
-        type: string
-      organizer:
-        type: string
-      price:
-        type: number
-      start_time:
-        type: string
-    required:
-    - age_limit
-    - capacity
-    - categories
-    - description
-    - dress_code
-    - end_time
-    - location
-    - name
-    - organizer
-    - price
-    - start_time
-    type: object
   payload.UpdateLocationRequest:
     properties:
       level:
         type: string
       name:
         type: string
-    type: object
-  payload.UpdateUserRequest:
-    properties:
-      username:
-        type: string
-    required:
-    - username
     type: object
   payload.UploadEventImageResponse:
     properties:
@@ -319,15 +205,17 @@ paths:
   /auth/login:
     post:
       consumes:
-      - application/json
+      - application/x-www-form-urlencoded
       description: Login
       parameters:
-      - description: Login
-        in: body
-        name: body
+      - in: formData
+        name: email
         required: true
-        schema:
-          $ref: '#/definitions/payload.LoginRequest'
+        type: string
+      - in: formData
+        name: password
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -341,15 +229,21 @@ paths:
   /auth/register:
     post:
       consumes:
-      - application/json
+      - application/x-www-form-urlencoded
       description: Register a new user
       parameters:
-      - description: User
-        in: body
-        name: body
+      - in: formData
+        name: email
         required: true
-        schema:
-          $ref: '#/definitions/payload.RegisterRequest'
+        type: string
+      - in: formData
+        name: password
+        required: true
+        type: string
+      - in: formData
+        name: username
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -495,17 +389,56 @@ paths:
       - multipart/form-data
       description: Create an event.
       parameters:
-      - description: Image
+      - description: Image file
         in: formData
         name: image
-        required: true
         type: file
-      - description: The event data is JSON in string.
-        in: body
-        name: data
+      - in: formData
+        name: age_limit
+        type: integer
+      - in: formData
+        name: capacity
         required: true
-        schema:
-          $ref: '#/definitions/payload.CreateEventData'
+        type: integer
+      - collectionFormat: csv
+        description: 'Example: cat1,cat2'
+        in: formData
+        items:
+          type: string
+        name: categories
+        type: array
+      - in: formData
+        name: description
+        required: true
+        type: string
+      - in: formData
+        name: dress_code
+        type: string
+      - description: 'Example: 2023-12-01T20:00:00.000Z'
+        in: formData
+        name: end_time
+        required: true
+        type: string
+      - in: formData
+        name: location
+        required: true
+        type: string
+      - in: formData
+        name: name
+        required: true
+        type: string
+      - in: formData
+        name: organizer
+        type: string
+      - in: formData
+        name: price
+        required: true
+        type: number
+      - description: 'Example: 2023-12-01T20:00:00.000Z'
+        in: formData
+        name: start_time
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -559,7 +492,7 @@ paths:
       - events
     put:
       consumes:
-      - application/json
+      - application/x-www-form-urlencoded
       description: Update an event
       parameters:
       - description: Event ID
@@ -567,12 +500,56 @@ paths:
         name: id
         required: true
         type: string
-      - description: Event
-        in: body
-        name: body
+      - in: formData
+        name: age_limit
         required: true
-        schema:
-          $ref: '#/definitions/payload.UpdateEventRequest'
+        type: integer
+      - in: formData
+        name: capacity
+        required: true
+        type: integer
+      - collectionFormat: csv
+        description: 'Example: cat1,cat2'
+        in: formData
+        items:
+          type: string
+        name: categories
+        required: true
+        type: array
+      - in: formData
+        name: description
+        required: true
+        type: string
+      - in: formData
+        name: dress_code
+        required: true
+        type: string
+      - description: 'Example: 2023-12-01T20:00:00.000Z'
+        in: formData
+        name: end_time
+        required: true
+        type: string
+      - in: formData
+        name: location
+        required: true
+        type: string
+      - in: formData
+        name: name
+        required: true
+        type: string
+      - in: formData
+        name: organizer
+        required: true
+        type: string
+      - in: formData
+        name: price
+        required: true
+        type: number
+      - description: 'Example: 2023-12-01T20:00:00.000Z'
+        in: formData
+        name: start_time
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -764,7 +741,7 @@ paths:
       - reviews
     post:
       consumes:
-      - application/json
+      - application/x-www-form-urlencoded
       description: Create a review
       parameters:
       - description: With the bearer started
@@ -777,12 +754,14 @@ paths:
         name: event_id
         required: true
         type: string
-      - description: Review
-        in: body
-        name: body
+      - in: formData
+        name: comment
         required: true
-        schema:
-          $ref: '#/definitions/payload.CreateReviewRequest'
+        type: string
+      - in: formData
+        name: rating
+        required: true
+        type: integer
       responses:
         "201":
           description: Created
@@ -838,7 +817,7 @@ paths:
       - users
     put:
       consumes:
-      - application/json
+      - application/x-www-form-urlencoded
       description: Update a user
       parameters:
       - description: With the bearer started
@@ -846,12 +825,10 @@ paths:
         name: Authorization
         required: true
         type: string
-      - description: User
-        in: body
-        name: body
+      - in: formData
+        name: username
         required: true
-        schema:
-          $ref: '#/definitions/payload.UpdateUserRequest'
+        type: string
       produces:
       - application/json
       responses:

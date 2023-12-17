@@ -18,20 +18,19 @@ import (
 // @Tags events
 // @Accept  multipart/form-data
 // @Produce json
-// @Param image formData file true "Image"
-// @Param data body payload.CreateEventData true "The event data is JSON in string."
+// @Param image formData file false "Image file"
+// @Param body formData payload.CreateEventData true "Event"
 // @Success 200 {object} payload.CreateResponse
 // @Router /events [post]
 func CreateEvent(c *gin.Context) {
 	c.Header("Content-Type", "application/json")
 
-	var bodyForm payload.CreateEventRequest
-	if err := c.Bind(&bodyForm); err != nil {
+	var body payload.CreateEventRequest
+	if err := c.ShouldBind(&body); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
 
-	body := bodyForm.Data
 	layout := "2006-01-02T15:04:05.000Z"
 	startTime, err := time.Parse(layout, body.StartTime)
 	if err != nil {

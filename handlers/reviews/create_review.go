@@ -13,17 +13,17 @@ import (
 // @Summary Create a review
 // @Description Create a review
 // @Tags reviews
-// @Accept  json
+// @Accept  x-www-form-urlencoded
 // @Param Authorization header string true "With the bearer started"
 // @Param event_id path string true "Event ID"
-// @Param body body payload.CreateReviewRequest true "Review"
+// @Param body formData payload.CreateReviewRequest true "Review"
 // @Success 201 {object} payload.CreateResponse
 // @Router /reviews/{event_id} [post]
 func CreateReview(c *gin.Context) {
 	c.Header("Content-Type", "application/json")
 
 	var body payload.CreateReviewRequest
-	if err := c.BindJSON(&body); err != nil {
+	if err := c.ShouldBind(&body); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
