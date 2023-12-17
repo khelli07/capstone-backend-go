@@ -37,7 +37,6 @@ func init() {
 // @license.name  Apache 2.0
 // @license.url   http://www.apache.org/licenses/LICENSE-2.0.html
 
-// @host      localhost:9999
 // @BasePath  /
 func main() {
 	defer mongodb.Client.Disconnect(mongodb.Context)

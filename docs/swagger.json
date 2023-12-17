@@ -10,7 +10,6 @@
         },
         "version": "1.0"
     },
-    "host": "localhost:9999",
     "basePath": "/",
     "paths": {
         "/auth/login": {
