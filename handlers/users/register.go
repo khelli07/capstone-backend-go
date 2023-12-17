@@ -5,6 +5,7 @@ import (
 	payload "backend-go/payload/request"
 	"backend-go/repository"
 	"net/http"
+	"regexp"
 
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
@@ -26,6 +27,13 @@ func Register(c *gin.Context) {
 	if c.ShouldBind(&body) != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "Invalid request body",
+		})
+		return
+	}
+
+	if !isEmailValid(body.Email) {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "Invalid email",
 		})
 		return
 	}
@@ -64,4 +72,9 @@ func Register(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"message": "User created successfully",
 	})
+}
+
+func isEmailValid(e string) bool {
+	emailRegex := regexp.MustCompile("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
+	return emailRegex.MatchString(e)
 }

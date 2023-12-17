@@ -41,6 +41,17 @@ func JoinEvent(c *gin.Context) {
 		return
 	}
 
+	if user.JoinedEvent == nil {
+		user.JoinedEvent = []string{eventID}
+	} else {
+		for _, joinedEvent := range user.JoinedEvent {
+			if joinedEvent == eventID {
+				c.JSON(http.StatusBadRequest, gin.H{"message": "You already joined this event"})
+				return
+			}
+		}
+	}
+
 	user.JoinedEvent = append(user.JoinedEvent, eventID)
 	_, err = repository.UpdateUser(tokenUser.ID, &user)
 	if err != nil {
