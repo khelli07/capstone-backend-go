@@ -94,6 +94,15 @@ definitions:
       user_id:
         type: string
     type: object
+  models.TokenUser:
+    properties:
+      email:
+        type: string
+      id:
+        type: string
+      username:
+        type: string
+    type: object
   models.User:
     properties:
       created_at:
@@ -172,6 +181,8 @@ definitions:
     properties:
       token:
         type: string
+      user:
+        $ref: '#/definitions/models.TokenUser'
     type: object
   payload.UpdateCategoryRequest:
     properties:

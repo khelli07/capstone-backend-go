@@ -1154,6 +1154,20 @@ const docTemplate = `{
                 }
             }
         },
+        "models.TokenUser": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
         "models.User": {
             "type": "object",
             "properties": {
@@ -1274,6 +1288,9 @@ const docTemplate = `{
             "properties": {
                 "token": {
                     "type": "string"
+                },
+                "user": {
+                    "$ref": "#/definitions/models.TokenUser"
                 }
             }
         },

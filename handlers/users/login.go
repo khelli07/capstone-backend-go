@@ -1,6 +1,7 @@
 package users
 
 import (
+	"backend-go/models"
 	payload "backend-go/payload/request"
 	"backend-go/repository"
 	"net/http"
@@ -65,7 +66,14 @@ func Login(c *gin.Context) {
 		return
 	}
 
+	tokenUser := models.TokenUser{
+		ID:       newUser.ID.Hex(),
+		Username: newUser.Username,
+		Email:    newUser.Email,
+	}
+
 	c.JSON(http.StatusOK, gin.H{
 		"token": tokenString,
+		"user":  tokenUser,
 	})
 }
