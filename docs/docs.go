@@ -276,6 +276,13 @@ const docTemplate = `{
                         "description": "Event start time",
                         "name": "start_time",
                         "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "example": "2023-12-02T20:00:00.000Z",
+                        "description": "Event that start later than this will not appear",
+                        "name": "start_time_cap",
+                        "in": "query"
                     }
                 ],
                 "responses": {

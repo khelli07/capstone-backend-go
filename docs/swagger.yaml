@@ -336,6 +336,11 @@ paths:
         in: query
         name: start_time
         type: string
+      - description: Event that start later than this will not appear
+        example: "2023-12-02T20:00:00.000Z"
+        in: query
+        name: start_time_cap
+        type: string
       produces:
       - application/json
       responses:
