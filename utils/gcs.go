@@ -21,7 +21,12 @@ var storageContext context.Context
 func InitGCS() {
 	storageContext = context.Background()
 	var err error
-	storageClient, err = storage.NewClient(storageContext, option.WithCredentialsFile(os.Getenv("GCS_CREDENTIALS")))
+
+	if os.Getenv("ENV") == "prod" {
+		storageClient, err = storage.NewClient(storageContext)
+	} else {
+		storageClient, err = storage.NewClient(storageContext, option.WithCredentialsFile(os.Getenv("GCS_CREDENTIALS")))
+	}
 	if err != nil {
 		log.Println(err)
 	}
