@@ -8,7 +8,9 @@
 
 ## Changelog
 ```
-v2.0.0 -> Remove location entity, use latitute and longitude instead
+v2.0.0 
+- Remove location entity, use latitute and longitude instead
+- Change several response schema, e.g. returning events entity for user info.
 ```
 
 ## Developers

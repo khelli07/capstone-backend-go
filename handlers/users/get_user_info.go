@@ -2,6 +2,7 @@ package users
 
 import (
 	"backend-go/models"
+	payload "backend-go/payload/response"
 	"backend-go/repository"
 	"net/http"
 
@@ -15,7 +16,7 @@ import (
 // @Accept  json
 // @Produce  json
 // @Param Authorization header string true "With the bearer started"
-// @Success 200 {object} models.User
+// @Success 200 {object} payload.GetUserResponse
 // @Router /users [get]
 func GetUserInfo(c *gin.Context) {
 	c.Header("Content-Type", "application/json")
@@ -26,5 +27,27 @@ func GetUserInfo(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, entity)
+
+	events := []models.Event{}
+	for _, eventID := range entity.JoinedEvent {
+		event, err := repository.GetEventById(eventID)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+			return
+		}
+		events = append(events, event)
+	}
+
+	userResponse := payload.UserResponse{
+		ID:          entity.ID.Hex(),
+		Username:    entity.Username,
+		Email:       entity.Email,
+		JoinedEvent: events,
+		Timestamps:  entity.Timestamps,
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "User fetched successfully",
+		"user":    userResponse,
+	})
 }

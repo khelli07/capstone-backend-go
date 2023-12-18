@@ -141,6 +141,13 @@ definitions:
           $ref: '#/definitions/models.Review'
         type: array
     type: object
+  payload.GetUserResponse:
+    properties:
+      message:
+        type: string
+      user:
+        $ref: '#/definitions/payload.UserResponse'
+    type: object
   payload.LoginResponse:
     properties:
       token:
@@ -158,6 +165,23 @@ definitions:
   payload.UploadEventImageResponse:
     properties:
       url:
+        type: string
+    type: object
+  payload.UserResponse:
+    properties:
+      created_at:
+        type: string
+      email:
+        type: string
+      id:
+        type: string
+      joined_event:
+        items:
+          $ref: '#/definitions/models.Event'
+        type: array
+      updated_at:
+        type: string
+      username:
         type: string
     type: object
 info:
@@ -690,7 +714,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.User'
+            $ref: '#/definitions/payload.GetUserResponse'
       summary: Get user info
       tags:
       - users
