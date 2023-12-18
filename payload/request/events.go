@@ -7,7 +7,7 @@ type CreateEventData struct {
 	// Example: cat1,cat2
 	Categories  []string `form:"categories"`
 	Description string   `form:"description" binding:"required"`
-	Price       float32  `form:"price" binding:"required"`
+	Price       float32  `form:"price"`
 	Capacity    int32    `form:"capacity" binding:"required"`
 	Organizer   string   `form:"organizer"`
 	DressCode   string   `form:"dress_code"`
@@ -30,7 +30,7 @@ type UpdateEventRequest struct {
 	// Example: cat1,cat2
 	Categories  []string `form:"categories"`
 	Description string   `form:"description" binding:"required"`
-	Price       float32  `form:"price" binding:"required"`
+	Price       float32  `form:"price"`
 	Capacity    int32    `form:"capacity" binding:"required"`
 	Organizer   string   `form:"organizer"`
 	DressCode   string   `form:"dress_code"`
