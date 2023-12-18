@@ -32,6 +32,7 @@ func CreateEvent(c *gin.Context) {
 		return
 	}
 
+	// Lat and Long
 	if (body.Lat == 0 && body.Long != 0) || (body.Lat != 0 && body.Long == 0) {
 		c.JSON(http.StatusBadRequest, gin.H{"message": "Both lat and long must be provided"})
 		return
@@ -42,6 +43,7 @@ func CreateEvent(c *gin.Context) {
 		isOnline = true
 	}
 
+	// Time
 	layout := "2006-01-02T15:04:05.000Z"
 	startTime, err := time.Parse(layout, body.StartTime)
 	if err != nil {
@@ -60,6 +62,14 @@ func CreateEvent(c *gin.Context) {
 		return
 	}
 
+	// Categories
+	categoryIds, err := repository.CategoryNamesToIds(strings.Split(body.Categories, ","))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "Invalid categories"})
+		return
+	}
+
+	// Image
 	f, uploadedFile, err := c.Request.FormFile("image")
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
@@ -79,7 +89,7 @@ func CreateEvent(c *gin.Context) {
 		Name:        body.Name,
 		StartTime:   startTime,
 		EndTime:     endTime,
-		Categories:  strings.Split(body.Categories, ","),
+		Categories:  categoryIds,
 		Description: body.Description,
 		Price:       body.Price,
 		Capacity:    body.Capacity,

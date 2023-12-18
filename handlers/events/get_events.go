@@ -36,7 +36,16 @@ func GetEvents(c *gin.Context) {
 	}
 
 	if categories := c.Query("categories"); categories != "" {
-		query["categories"] = bson.M{"$all": strings.Split(categories, ",")}
+		categoryIds := []string{}
+		for _, category := range strings.Split(categories, ",") {
+			category, err := repository.GetCategoryByName(category)
+			if err != nil {
+				c.JSON(http.StatusBadRequest, gin.H{"message": "Category invalid"})
+				return
+			}
+			categoryIds = append(categoryIds, category.ID.Hex())
+		}
+		query["categories"] = bson.M{"$in": categoryIds}
 	}
 
 	if priceStart := c.Query("price_start"); priceStart != "" {
@@ -90,6 +99,15 @@ func GetEvents(c *gin.Context) {
 
 	if len(events) == 0 {
 		events = []models.Event{}
+	}
+
+	for i, event := range events {
+		categories, err := repository.CategoryIdsToNames(event.Categories)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+			return
+		}
+		events[i].Categories = categories
 	}
 
 	c.JSON(http.StatusOK, gin.H{"data": events})

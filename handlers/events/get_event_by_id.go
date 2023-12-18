@@ -25,5 +25,13 @@ func GetEventById(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
 		return
 	}
+
+	categories, err := repository.CategoryIdsToNames(entity.Categories)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+		return
+	}
+	entity.Categories = categories
+
 	c.JSON(http.StatusOK, entity)
 }

@@ -391,13 +391,10 @@ paths:
         name: capacity
         required: true
         type: integer
-      - collectionFormat: csv
-        description: 'Example: cat1,cat2'
+      - description: 'Example: cat1,cat2'
         in: formData
-        items:
-          type: string
         name: categories
-        type: array
+        type: string
       - in: formData
         name: description
         required: true
@@ -425,7 +422,6 @@ paths:
         type: string
       - in: formData
         name: price
-        required: true
         type: number
       - description: 'Example: 2023-12-01T20:00:00.000Z'
         in: formData
@@ -500,13 +496,10 @@ paths:
         name: capacity
         required: true
         type: integer
-      - collectionFormat: csv
-        description: 'Example: cat1,cat2'
+      - description: 'Example: cat1,cat2'
         in: formData
-        items:
-          type: string
         name: categories
-        type: array
+        type: string
       - in: formData
         name: description
         required: true
@@ -534,7 +527,6 @@ paths:
         type: string
       - in: formData
         name: price
-        required: true
         type: number
       - description: 'Example: 2023-12-01T20:00:00.000Z'
         in: formData

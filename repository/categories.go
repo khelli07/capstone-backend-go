@@ -23,6 +23,31 @@ func CreateCategory(category *models.Category) (*mongo.InsertOneResult, error) {
 	return result, nil
 }
 
+func GetCategoryById(id string) (models.Category, error) {
+	var category models.Category
+	objectID, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return category, errors.Wrap(err, "Failed to convert ID to ObjectID")
+	}
+
+	filter := bson.M{"_id": objectID}
+	if err := mongodb.CategoryCol.FindOne(mongodb.Context, filter).Decode(&category); err != nil {
+		return category, errors.Wrap(err, "Failed to decode MongoDB entity")
+	}
+
+	return category, nil
+}
+
+func GetCategoryByName(name string) (models.Category, error) {
+	var category models.Category
+	filter := bson.M{"name": name}
+	if err := mongodb.CategoryCol.FindOne(mongodb.Context, filter).Decode(&category); err != nil {
+		return category, errors.Wrap(err, "Failed to decode MongoDB entity")
+	}
+
+	return category, nil
+}
+
 func GetAllCategories() ([]models.Category, error) {
 	var categories []models.Category
 	cursor, err := mongodb.CategoryCol.Find(mongodb.Context, bson.M{})
@@ -69,4 +94,30 @@ func DeleteCategory(id string) error {
 	}
 
 	return nil
+}
+
+func CategoryIdsToNames(ids []string) ([]string, error) {
+	names := []string{}
+	for _, id := range ids {
+		category, err := GetCategoryById(id)
+		if err != nil {
+			return []string{}, err
+		}
+		names = append(names, category.Name)
+	}
+
+	return names, nil
+}
+
+func CategoryNamesToIds(names []string) ([]string, error) {
+	ids := []string{}
+	for _, name := range names {
+		category, err := GetCategoryByName(name)
+		if err != nil {
+			return []string{}, err
+		}
+		ids = append(ids, category.ID.Hex())
+	}
+
+	return ids, nil
 }

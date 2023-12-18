@@ -325,11 +325,7 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "collectionFormat": "csv",
+                        "type": "string",
                         "description": "Example: cat1,cat2",
                         "name": "categories",
                         "in": "formData"
@@ -376,8 +372,7 @@ const docTemplate = `{
                     {
                         "type": "number",
                         "name": "price",
-                        "in": "formData",
-                        "required": true
+                        "in": "formData"
                     },
                     {
                         "type": "string",
@@ -491,11 +486,7 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "collectionFormat": "csv",
+                        "type": "string",
                         "description": "Example: cat1,cat2",
                         "name": "categories",
                         "in": "formData"
@@ -542,8 +533,7 @@ const docTemplate = `{
                     {
                         "type": "number",
                         "name": "price",
-                        "in": "formData",
-                        "required": true
+                        "in": "formData"
                     },
                     {
                         "type": "string",
