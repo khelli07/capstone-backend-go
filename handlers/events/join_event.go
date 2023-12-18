@@ -28,13 +28,6 @@ func JoinEvent(c *gin.Context) {
 	}
 
 	tokenUser := c.MustGet("user").(models.TokenUser)
-	event.Participants = append(event.Participants, tokenUser.ID)
-	_, err = repository.UpdateEvent(eventID, &event)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
-		return
-	}
-
 	user, err := repository.GetUserById(tokenUser.ID)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
@@ -51,8 +44,15 @@ func JoinEvent(c *gin.Context) {
 			}
 		}
 	}
-
 	user.JoinedEvent = append(user.JoinedEvent, eventID)
+
+	event.Participants = append(event.Participants, tokenUser.ID)
+	_, err = repository.UpdateEvent(eventID, &event)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+		return
+	}
+
 	_, err = repository.UpdateUser(tokenUser.ID, &user)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
