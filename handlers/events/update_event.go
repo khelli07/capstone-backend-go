@@ -40,8 +40,17 @@ func UpdateEvent(c *gin.Context) {
 		return
 	}
 
-	layout := "2006-01-02T15:04:05.000Z"
+	if (body.Lat == 0 && body.Long != 0) || (body.Lat != 0 && body.Long == 0) {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "Both lat and long must be provided"})
+		return
+	}
 
+	isOnline := false
+	if body.Lat == 0 && body.Long == 0 {
+		isOnline = true
+	}
+
+	layout := "2006-01-02T15:04:05.000Z"
 	startTime, err := time.Parse(layout, body.StartTime)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"message": "invalid start time"})
@@ -61,16 +70,18 @@ func UpdateEvent(c *gin.Context) {
 
 	updatedEvent := models.Event{
 		Name:        body.Name,
+		StartTime:   startTime,
+		EndTime:     endTime,
 		Categories:  body.Categories,
 		Description: body.Description,
-		Location:    body.Location,
 		Price:       body.Price,
 		Capacity:    body.Capacity,
+		IsOnline:    isOnline,
+		Lat:         body.Lat,
+		Long:        body.Long,
 		Organizer:   body.Organizer,
 		DressCode:   body.DressCode,
 		AgeLimit:    body.AgeLimit,
-		StartTime:   startTime,
-		EndTime:     endTime,
 	}
 
 	_, err = repository.UpdateEvent(id, &updatedEvent)

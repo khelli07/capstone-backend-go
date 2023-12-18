@@ -20,7 +20,6 @@ import (
 // @Produce  json
 // @Param name query string false "Event name"
 // @Param categories query string false "Event categories" Example(cat1,cat2)
-// @Param locations query string false "Event locations" Example(loc_a,loc_b)
 // @Param price_start query string false "Event price start"
 // @Param price_end query string false "Event price end"
 // @Param age_limit query string false "Event age limit"
@@ -37,10 +36,6 @@ func GetEvents(c *gin.Context) {
 
 	if categories := c.Query("categories"); categories != "" {
 		query["categories"] = bson.M{"$all": strings.Split(categories, ",")}
-	}
-
-	if locations := c.Query("locations"); locations != "" {
-		query["location"] = bson.M{"$in": strings.Split(locations, ",")}
 	}
 
 	if priceStart := c.Query("price_start"); priceStart != "" {

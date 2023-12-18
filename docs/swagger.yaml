@@ -33,10 +33,14 @@ definitions:
       id:
         type: string
       image_url:
+        type: string
+      is_online:
+        type: boolean
+      lat:
         description: non-mandatory fields
-        type: string
-      location:
-        type: string
+        type: number
+      long:
+        type: number
       name:
         type: string
       organizer:
@@ -51,29 +55,6 @@ definitions:
         type: string
       total_likes:
         type: integer
-      updated_at:
-        type: string
-    type: object
-  models.Level:
-    enum:
-    - country
-    - state
-    - city
-    type: string
-    x-enum-varnames:
-    - Country
-    - State
-    - City
-  models.Location:
-    properties:
-      created_at:
-        type: string
-      id:
-        type: string
-      level:
-        $ref: '#/definitions/models.Level'
-      name:
-        type: string
       updated_at:
         type: string
     type: object
@@ -127,16 +108,6 @@ definitions:
     required:
     - name
     type: object
-  payload.CreateLocationRequest:
-    properties:
-      level:
-        type: string
-      name:
-        type: string
-    required:
-    - level
-    - name
-    type: object
   payload.CreateResponse:
     properties:
       id:
@@ -161,13 +132,6 @@ definitions:
           $ref: '#/definitions/models.Event'
         type: array
     type: object
-  payload.GetLocationsResponse:
-    properties:
-      data:
-        items:
-          $ref: '#/definitions/models.Location'
-        type: array
-    type: object
   payload.GetReviewsResponse:
     properties:
       average_rating:
@@ -190,13 +154,6 @@ definitions:
         type: string
     required:
     - name
-    type: object
-  payload.UpdateLocationRequest:
-    properties:
-      level:
-        type: string
-      name:
-        type: string
     type: object
   payload.UploadEventImageResponse:
     properties:
@@ -362,11 +319,6 @@ paths:
         in: query
         name: categories
         type: string
-      - description: Event locations
-        example: loc_a,loc_b
-        in: query
-        name: locations
-        type: string
       - description: Event price start
         in: query
         name: price_start
@@ -430,9 +382,11 @@ paths:
         required: true
         type: string
       - in: formData
-        name: location
-        required: true
-        type: string
+        name: lat
+        type: number
+      - in: formData
+        name: long
+        type: number
       - in: formData
         name: name
         required: true
@@ -512,7 +466,6 @@ paths:
         type: string
       - in: formData
         name: age_limit
-        required: true
         type: integer
       - in: formData
         name: capacity
@@ -524,7 +477,6 @@ paths:
         items:
           type: string
         name: categories
-        required: true
         type: array
       - in: formData
         name: description
@@ -532,7 +484,6 @@ paths:
         type: string
       - in: formData
         name: dress_code
-        required: true
         type: string
       - description: 'Example: 2023-12-01T20:00:00.000Z'
         in: formData
@@ -540,16 +491,17 @@ paths:
         required: true
         type: string
       - in: formData
-        name: location
-        required: true
-        type: string
+        name: lat
+        type: number
+      - in: formData
+        name: long
+        type: number
       - in: formData
         name: name
         required: true
         type: string
       - in: formData
         name: organizer
-        required: true
         type: string
       - in: formData
         name: price
@@ -640,94 +592,6 @@ paths:
       summary: Get popular events
       tags:
       - events
-  /locations:
-    get:
-      consumes:
-      - application/json
-      description: Get locations
-      parameters:
-      - description: Location level
-        in: query
-        name: level
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/payload.GetLocationsResponse'
-      summary: Get locations
-      tags:
-      - locations
-    post:
-      consumes:
-      - application/json
-      description: Create a new location
-      parameters:
-      - description: Create Location
-        in: body
-        name: body
-        required: true
-        schema:
-          $ref: '#/definitions/payload.CreateLocationRequest'
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: Created
-          schema:
-            $ref: '#/definitions/payload.CreateResponse'
-      summary: Create a new location
-      tags:
-      - locations
-  /locations/{id}:
-    delete:
-      consumes:
-      - application/json
-      description: Delete a location
-      parameters:
-      - description: Location ID
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/payload.GeneralResponse'
-      summary: Delete a location
-      tags:
-      - locations
-    put:
-      consumes:
-      - application/json
-      description: Update a location
-      parameters:
-      - description: Location ID
-        in: path
-        name: id
-        required: true
-        type: string
-      - description: Update Location
-        in: body
-        name: body
-        required: true
-        schema:
-          $ref: '#/definitions/payload.UpdateLocationRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/payload.GeneralResponse'
-      summary: Update a location
-      tags:
-      - locations
   /reviews/{event_id}:
     get:
       consumes:

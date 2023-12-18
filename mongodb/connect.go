@@ -19,7 +19,7 @@ func ConnectDB() {
 	mongoURI := os.Getenv("MONGO_URI")
 	Context = context.Background()
 	if mongoURI == "" {
-		log.Fatal("MONGO_URI environment variable not set")
+		log.Println("MONGO_URI environment variable not set")
 	}
 
 	serverAPI := options.ServerAPI(options.ServerAPIVersion1)
@@ -28,12 +28,12 @@ func ConnectDB() {
 	// Create a new client and connect to the server
 	Client, err := mongo.Connect(context.TODO(), opts)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 	}
 
 	// Send a ping to confirm a successful connection
 	if err := Client.Database("admin").RunCommand(context.TODO(), bson.D{{Key: "ping", Value: 1}}).Err(); err != nil {
-		log.Fatal(err)
+		log.Println(err)
 	}
 	fmt.Println("Pinged your deployment. You successfully connected to MongoDB!")
 

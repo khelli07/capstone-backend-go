@@ -30,7 +30,6 @@ func InitGCS() {
 
 func UploadFile(f multipart.File, uploadedFile *multipart.FileHeader) (string, error) {
 	fileName := fmt.Sprintf("%d-%s", time.Now().Unix(), uploadedFile.Filename)
-	fmt.Println(os.Getenv("GCS_BUCKET"), fileName, storageContext)
 
 	sw := storageClient.Bucket(os.Getenv("GCS_BUCKET")).Object(fileName).NewWriter(storageContext)
 	if _, err := io.Copy(sw, f); err != nil {

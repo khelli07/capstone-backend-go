@@ -31,6 +31,16 @@ func CreateEvent(c *gin.Context) {
 		return
 	}
 
+	if (body.Lat == 0 && body.Long != 0) || (body.Lat != 0 && body.Long == 0) {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "Both lat and long must be provided"})
+		return
+	}
+
+	isOnline := false
+	if body.Lat == 0 && body.Long == 0 {
+		isOnline = true
+	}
+
 	layout := "2006-01-02T15:04:05.000Z"
 	startTime, err := time.Parse(layout, body.StartTime)
 	if err != nil {
@@ -70,10 +80,12 @@ func CreateEvent(c *gin.Context) {
 		EndTime:     endTime,
 		Categories:  body.Categories,
 		Description: body.Description,
-		Location:    body.Location,
 		Price:       body.Price,
 		Capacity:    body.Capacity,
 		ImageURL:    imageUrl,
+		IsOnline:    isOnline,
+		Lat:         body.Lat,
+		Long:        body.Long,
 		Organizer:   body.Organizer,
 		DressCode:   body.DressCode,
 		AgeLimit:    body.AgeLimit,

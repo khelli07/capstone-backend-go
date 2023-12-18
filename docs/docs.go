@@ -254,13 +254,6 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "example": "loc_a,loc_b",
-                        "description": "Event locations",
-                        "name": "locations",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
                         "description": "Event price start",
                         "name": "price_start",
                         "in": "query"
@@ -353,10 +346,14 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "type": "string",
-                        "name": "location",
-                        "in": "formData",
-                        "required": true
+                        "type": "number",
+                        "name": "lat",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "number",
+                        "name": "long",
+                        "in": "formData"
                     },
                     {
                         "type": "string",
@@ -478,8 +475,7 @@ const docTemplate = `{
                     {
                         "type": "integer",
                         "name": "age_limit",
-                        "in": "formData",
-                        "required": true
+                        "in": "formData"
                     },
                     {
                         "type": "integer",
@@ -495,8 +491,7 @@ const docTemplate = `{
                         "collectionFormat": "csv",
                         "description": "Example: cat1,cat2",
                         "name": "categories",
-                        "in": "formData",
-                        "required": true
+                        "in": "formData"
                     },
                     {
                         "type": "string",
@@ -507,8 +502,7 @@ const docTemplate = `{
                     {
                         "type": "string",
                         "name": "dress_code",
-                        "in": "formData",
-                        "required": true
+                        "in": "formData"
                     },
                     {
                         "type": "string",
@@ -518,10 +512,14 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "type": "string",
-                        "name": "location",
-                        "in": "formData",
-                        "required": true
+                        "type": "number",
+                        "name": "lat",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "number",
+                        "name": "long",
+                        "in": "formData"
                     },
                     {
                         "type": "string",
@@ -532,8 +530,7 @@ const docTemplate = `{
                     {
                         "type": "string",
                         "name": "organizer",
-                        "in": "formData",
-                        "required": true
+                        "in": "formData"
                     },
                     {
                         "type": "number",
@@ -649,140 +646,6 @@ const docTemplate = `{
                     {
                         "type": "string",
                         "description": "Event ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/payload.GeneralResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/locations": {
-            "get": {
-                "description": "Get locations",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "locations"
-                ],
-                "summary": "Get locations",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Location level",
-                        "name": "level",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/payload.GetLocationsResponse"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "description": "Create a new location",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "locations"
-                ],
-                "summary": "Create a new location",
-                "parameters": [
-                    {
-                        "description": "Create Location",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/payload.CreateLocationRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Created",
-                        "schema": {
-                            "$ref": "#/definitions/payload.CreateResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/locations/{id}": {
-            "put": {
-                "description": "Update a location",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "locations"
-                ],
-                "summary": "Update a location",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Location ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "Update Location",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/payload.UpdateLocationRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/payload.GeneralResponse"
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "description": "Delete a location",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "locations"
-                ],
-                "summary": "Delete a location",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Location ID",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -1063,11 +926,17 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "image_url": {
-                    "description": "non-mandatory fields",
                     "type": "string"
                 },
-                "location": {
-                    "type": "string"
+                "is_online": {
+                    "type": "boolean"
+                },
+                "lat": {
+                    "description": "non-mandatory fields",
+                    "type": "number"
+                },
+                "long": {
+                    "type": "number"
                 },
                 "name": {
                     "type": "string"
@@ -1089,39 +958,6 @@ const docTemplate = `{
                 },
                 "total_likes": {
                     "type": "integer"
-                },
-                "updated_at": {
-                    "type": "string"
-                }
-            }
-        },
-        "models.Level": {
-            "type": "string",
-            "enum": [
-                "country",
-                "state",
-                "city"
-            ],
-            "x-enum-varnames": [
-                "Country",
-                "State",
-                "City"
-            ]
-        },
-        "models.Location": {
-            "type": "object",
-            "properties": {
-                "created_at": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "level": {
-                    "$ref": "#/definitions/models.Level"
-                },
-                "name": {
-                    "type": "string"
                 },
                 "updated_at": {
                     "type": "string"
@@ -1205,21 +1041,6 @@ const docTemplate = `{
                 }
             }
         },
-        "payload.CreateLocationRequest": {
-            "type": "object",
-            "required": [
-                "level",
-                "name"
-            ],
-            "properties": {
-                "level": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                }
-            }
-        },
         "payload.CreateResponse": {
             "type": "object",
             "properties": {
@@ -1258,17 +1079,6 @@ const docTemplate = `{
                 }
             }
         },
-        "payload.GetLocationsResponse": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/models.Location"
-                    }
-                }
-            }
-        },
         "payload.GetReviewsResponse": {
             "type": "object",
             "properties": {
@@ -1300,17 +1110,6 @@ const docTemplate = `{
                 "name"
             ],
             "properties": {
-                "name": {
-                    "type": "string"
-                }
-            }
-        },
-        "payload.UpdateLocationRequest": {
-            "type": "object",
-            "properties": {
-                "level": {
-                    "type": "string"
-                },
                 "name": {
                     "type": "string"
                 }
