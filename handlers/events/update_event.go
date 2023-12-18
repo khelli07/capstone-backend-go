@@ -5,6 +5,7 @@ import (
 	payload "backend-go/payload/request"
 	"backend-go/repository"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -72,7 +73,7 @@ func UpdateEvent(c *gin.Context) {
 		Name:        body.Name,
 		StartTime:   startTime,
 		EndTime:     endTime,
-		Categories:  body.Categories,
+		Categories:  strings.Split(body.Categories, ","),
 		Description: body.Description,
 		Price:       body.Price,
 		Capacity:    body.Capacity,

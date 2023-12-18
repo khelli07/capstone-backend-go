@@ -7,6 +7,7 @@ import (
 	"backend-go/utils"
 	"fmt"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -78,7 +79,7 @@ func CreateEvent(c *gin.Context) {
 		Name:        body.Name,
 		StartTime:   startTime,
 		EndTime:     endTime,
-		Categories:  body.Categories,
+		Categories:  strings.Split(body.Categories, ","),
 		Description: body.Description,
 		Price:       body.Price,
 		Capacity:    body.Capacity,
