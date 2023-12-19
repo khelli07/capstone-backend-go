@@ -15,6 +15,10 @@ v2.0.0
 v2.1.0 
 - GCS bugfixing
 - Endpoints bugfixing
+
+v2.2.0 
+- Made adjustments to user and event schema
+- ML Service Integration (awaiting response)
 ```
 
 ## Developers
