@@ -40,12 +40,12 @@ func GetEvents(c *gin.Context) {
 		for _, category := range strings.Split(categories, ",") {
 			category, err := repository.GetCategoryByName(category)
 			if err != nil {
-				c.JSON(http.StatusBadRequest, gin.H{"message": "Category invalid"})
+				c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 				return
 			}
 			categoryIds = append(categoryIds, category.ID.Hex())
 		}
-		query["categories"] = bson.M{"$in": categoryIds}
+		query["category"] = bson.M{"$in": categoryIds}
 	}
 
 	if priceStart := c.Query("price_start"); priceStart != "" {
