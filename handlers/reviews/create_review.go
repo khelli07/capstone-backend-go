@@ -33,11 +33,27 @@ func CreateReview(c *gin.Context) {
 		return
 	}
 
+	userId := c.MustGet("user").(models.TokenUser).ID
+	user, err := repository.GetUserById(userId)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+		return
+	}
+
+	eventId := c.Param("event_id")
+	event, err := repository.GetEventById(eventId)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+		return
+	}
+
 	review := models.Review{
-		EventID: c.Param("event_id"),
-		UserID:  c.MustGet("user").(models.TokenUser).ID,
-		Rating:  body.Rating,
-		Comment: body.Comment,
+		EventID:     eventId,
+		UserID:      userId,
+		Category:    event.Category,
+		Rating:      body.Rating,
+		Comment:     body.Comment,
+		JoinedEvent: user.JoinedEvent,
 	}
 
 	result, err := repository.CreateReview(&review)
