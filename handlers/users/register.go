@@ -6,6 +6,7 @@ import (
 	"backend-go/repository"
 	"net/http"
 	"regexp"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
@@ -49,6 +50,19 @@ func Register(c *gin.Context) {
 		return
 	}
 
+	// Categories
+	categoryIds := []string{}
+	for _, category := range strings.Split(body.PreferenceCategories, ",") {
+		category, err := repository.GetCategoryByName(category)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"message": "Invalid category",
+			})
+			return
+		}
+		categoryIds = append(categoryIds, category.ID.Hex())
+	}
+
 	hash, err := bcrypt.GenerateFromPassword([]byte(body.Password), bcrypt.DefaultCost)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -58,9 +72,12 @@ func Register(c *gin.Context) {
 	}
 
 	user := models.User{
-		Username: body.Username,
-		Email:    body.Email,
-		Password: string(hash),
+		Username:             body.Username,
+		Email:                body.Email,
+		Password:             string(hash),
+		Lat:                  body.Lat,
+		Long:                 body.Long,
+		PreferenceCategories: categoryIds,
 	}
 	_, err = repository.CreateUser(&user)
 

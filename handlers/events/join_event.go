@@ -34,26 +34,23 @@ func JoinEvent(c *gin.Context) {
 		return
 	}
 
-	if user.JoinedEvent == nil {
-		user.JoinedEvent = []string{eventID}
-	} else {
-		for _, joinedEvent := range user.JoinedEvent {
-			if joinedEvent == eventID {
-				c.JSON(http.StatusBadRequest, gin.H{"message": "You already joined this event"})
-				return
-			}
+	for _, joinedEvent := range user.JoinedEvent {
+		if joinedEvent == eventID {
+			c.JSON(http.StatusBadRequest, gin.H{"message": "You already joined this event"})
+			return
 		}
 	}
 	user.JoinedEvent = append(user.JoinedEvent, eventID)
+	user.EventCategories = append(user.EventCategories, event.Category)
 
-	event.Participants = append(event.Participants, tokenUser.ID)
-	_, err = repository.UpdateEvent(eventID, &event)
+	_, err = repository.UpdateUser(tokenUser.ID, &user)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
 		return
 	}
 
-	_, err = repository.UpdateUser(tokenUser.ID, &user)
+	event.Participants = append(event.Participants, tokenUser.ID)
+	_, err = repository.UpdateEvent(eventID, &event)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
 		return

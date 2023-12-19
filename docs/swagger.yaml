@@ -88,9 +88,21 @@ definitions:
         type: string
       email:
         type: string
+      event_categories:
+        items:
+          type: string
+        type: array
       id:
         type: string
       joined_event:
+        items:
+          type: string
+        type: array
+      lat:
+        type: number
+      long:
+        type: number
+      preference_categories:
         items:
           type: string
         type: array
@@ -171,11 +183,23 @@ definitions:
         type: string
       email:
         type: string
+      event_categories:
+        items:
+          type: string
+        type: array
       id:
         type: string
       joined_event:
         items:
           $ref: '#/definitions/models.Event'
+        type: array
+      lat:
+        type: number
+      long:
+        type: number
+      preference_categories:
+        items:
+          type: string
         type: array
       updated_at:
         type: string
@@ -226,7 +250,18 @@ paths:
         required: true
         type: string
       - in: formData
+        name: lat
+        type: number
+      - in: formData
+        name: long
+        type: number
+      - in: formData
         name: password
+        required: true
+        type: string
+      - description: 'Example: sports,adventure'
+        in: formData
+        name: preference_categories
         required: true
         type: string
       - in: formData

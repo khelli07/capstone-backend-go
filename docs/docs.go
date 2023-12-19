@@ -77,8 +77,25 @@ const docTemplate = `{
                         "required": true
                     },
                     {
+                        "type": "number",
+                        "name": "lat",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "number",
+                        "name": "long",
+                        "in": "formData"
+                    },
+                    {
                         "type": "string",
                         "name": "password",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Example: sports,adventure",
+                        "name": "preference_categories",
                         "in": "formData",
                         "required": true
                     },
@@ -1007,10 +1024,28 @@ const docTemplate = `{
                 "email": {
                     "type": "string"
                 },
+                "event_categories": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
                 "id": {
                     "type": "string"
                 },
                 "joined_event": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "lat": {
+                    "type": "number"
+                },
+                "long": {
+                    "type": "number"
+                },
+                "preference_categories": {
                     "type": "array",
                     "items": {
                         "type": "string"
@@ -1137,6 +1172,12 @@ const docTemplate = `{
                 "email": {
                     "type": "string"
                 },
+                "event_categories": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
                 "id": {
                     "type": "string"
                 },
@@ -1144,6 +1185,18 @@ const docTemplate = `{
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/models.Event"
+                    }
+                },
+                "lat": {
+                    "type": "number"
+                },
+                "long": {
+                    "type": "number"
+                },
+                "preference_categories": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
                     }
                 },
                 "updated_at": {
