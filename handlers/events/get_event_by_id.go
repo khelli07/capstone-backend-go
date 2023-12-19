@@ -26,12 +26,12 @@ func GetEventById(c *gin.Context) {
 		return
 	}
 
-	categories, err := repository.CategoryIdsToNames(entity.Categories)
+	category, err := repository.GetCategoryById(entity.Category)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
 		return
 	}
-	entity.Categories = categories
+	entity.Category = category.Name
 
 	c.JSON(http.StatusOK, entity)
 }

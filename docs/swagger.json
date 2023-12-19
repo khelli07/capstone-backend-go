@@ -319,8 +319,8 @@
                     },
                     {
                         "type": "string",
-                        "description": "Example: cat1,cat2",
-                        "name": "categories",
+                        "description": "Example: cat1",
+                        "name": "category",
                         "in": "formData"
                     },
                     {
@@ -480,8 +480,8 @@
                     },
                     {
                         "type": "string",
-                        "description": "Example: cat1,cat2",
-                        "name": "categories",
+                        "description": "Example: cat1",
+                        "name": "category",
                         "in": "formData"
                     },
                     {
@@ -893,12 +893,9 @@
                 "capacity": {
                     "type": "integer"
                 },
-                "categories": {
+                "category": {
                     "description": "relational fields",
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
+                    "type": "string"
                 },
                 "created_at": {
                     "type": "string"

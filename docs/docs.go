@@ -326,8 +326,8 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "description": "Example: cat1,cat2",
-                        "name": "categories",
+                        "description": "Example: cat1",
+                        "name": "category",
                         "in": "formData"
                     },
                     {
@@ -487,8 +487,8 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "description": "Example: cat1,cat2",
-                        "name": "categories",
+                        "description": "Example: cat1",
+                        "name": "category",
                         "in": "formData"
                     },
                     {
@@ -900,12 +900,9 @@ const docTemplate = `{
                 "capacity": {
                     "type": "integer"
                 },
-                "categories": {
+                "category": {
                     "description": "relational fields",
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
+                    "type": "string"
                 },
                 "created_at": {
                     "type": "string"

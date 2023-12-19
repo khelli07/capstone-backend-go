@@ -24,7 +24,7 @@ type Event struct {
 	AgeLimit   int     `bson:"age_limit" json:"age_limit"`
 	TotalLikes int     `bson:"total_likes" json:"total_likes"`
 	// relational fields
-	Categories   []string `bson:"categories" json:"categories"`
+	Category     string   `bson:"category" json:"category"`
 	Participants []string `bson:"participants" json:"participants"`
 	Timestamps
 }

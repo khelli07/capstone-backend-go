@@ -5,7 +5,6 @@ import (
 	payload "backend-go/payload/request"
 	"backend-go/repository"
 	"net/http"
-	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -71,10 +70,10 @@ func UpdateEvent(c *gin.Context) {
 		return
 	}
 
-	// Categories
-	categoryIds, err := repository.CategoryNamesToIds(strings.Split(body.Categories, ","))
+	// Category
+	category, err := repository.GetCategoryByName(body.Category)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"message": "Invalid categories"})
+		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
 
@@ -82,7 +81,7 @@ func UpdateEvent(c *gin.Context) {
 		Name:        body.Name,
 		StartTime:   startTime,
 		EndTime:     endTime,
-		Categories:  categoryIds,
+		Category:    category.ID.Hex(),
 		Description: body.Description,
 		Price:       body.Price,
 		Capacity:    body.Capacity,

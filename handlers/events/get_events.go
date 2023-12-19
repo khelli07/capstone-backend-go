@@ -102,12 +102,12 @@ func GetEvents(c *gin.Context) {
 	}
 
 	for i, event := range events {
-		categories, err := repository.CategoryIdsToNames(event.Categories)
+		category, err := repository.GetCategoryById(event.Category)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
 			return
 		}
-		events[i].Categories = categories
+		events[i].Category = category.Name
 	}
 
 	c.JSON(http.StatusOK, gin.H{"data": events})

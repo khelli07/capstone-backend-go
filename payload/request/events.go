@@ -4,8 +4,8 @@ import "mime/multipart"
 
 type CreateEventData struct {
 	Name string `form:"name" binding:"required"`
-	// Example: cat1,cat2
-	Categories  string  `form:"categories"`
+	// Example: cat1
+	Category    string  `form:"category"`
 	Description string  `form:"description" binding:"required"`
 	Price       float32 `form:"price"`
 	Capacity    int32   `form:"capacity" binding:"required"`
@@ -27,8 +27,8 @@ type CreateEventRequest struct {
 
 type UpdateEventRequest struct {
 	Name string `form:"name" binding:"required"`
-	// Example: cat1,cat2
-	Categories  string  `form:"categories"`
+	// Example: cat1
+	Category    string  `form:"category"`
 	Description string  `form:"description" binding:"required"`
 	Price       float32 `form:"price"`
 	Capacity    int32   `form:"capacity" binding:"required"`

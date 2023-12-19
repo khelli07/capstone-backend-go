@@ -17,11 +17,9 @@ definitions:
         type: integer
       capacity:
         type: integer
-      categories:
+      category:
         description: relational fields
-        items:
-          type: string
-        type: array
+        type: string
       created_at:
         type: string
       description:
@@ -391,9 +389,9 @@ paths:
         name: capacity
         required: true
         type: integer
-      - description: 'Example: cat1,cat2'
+      - description: 'Example: cat1'
         in: formData
-        name: categories
+        name: category
         type: string
       - in: formData
         name: description
@@ -496,9 +494,9 @@ paths:
         name: capacity
         required: true
         type: integer
-      - description: 'Example: cat1,cat2'
+      - description: 'Example: cat1'
         in: formData
-        name: categories
+        name: category
         type: string
       - in: formData
         name: description
