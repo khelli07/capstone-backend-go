@@ -3,6 +3,7 @@ package main
 import (
 	"backend-go/handlers/categories"
 	"backend-go/handlers/events"
+	"backend-go/handlers/ml"
 	"backend-go/handlers/reviews"
 	"backend-go/handlers/users"
 	"backend-go/middlewares"
@@ -68,12 +69,13 @@ func main() {
 	{
 		event.GET("/", events.GetEvents)
 		event.GET("/:id", events.GetEventById)
-		event.GET("/popular", events.GetPopularEvents)
-		event.POST("/", events.CreateEvent)      // TODO: Admin only
-		event.PUT("/:id", events.UpdateEvent)    // TODO: Admin + creator only
-		event.DELETE("/:id", events.DeleteEvent) // TODO: Admin + creator only
+		event.GET("/popular", ml.GetPopularEvents)
+		event.GET("/reco", middlewares.RequireAuth, ml.GetRecommendedEvents)
+		event.POST("/", events.CreateEvent)
+		event.PUT("/:id", events.UpdateEvent)
+		event.DELETE("/:id", events.DeleteEvent)
 		event.POST("/:id/join", middlewares.RequireAuth, events.JoinEvent)
-		event.POST("/:id/image", events.UploadEventImage) // TODO: Admin only
+		event.POST("/:id/image", events.UploadEventImage)
 	}
 
 	review := router.Group("/reviews")

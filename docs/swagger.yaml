@@ -631,11 +631,6 @@ paths:
       consumes:
       - application/json
       description: Get popular events
-      parameters:
-      - description: Top K
-        in: query
-        name: topK
-        type: string
       produces:
       - application/json
       responses:

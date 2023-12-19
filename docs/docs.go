@@ -422,14 +422,6 @@ const docTemplate = `{
                     "events"
                 ],
                 "summary": "Get popular events",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Top K",
-                        "name": "topK",
-                        "in": "query"
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "OK",
