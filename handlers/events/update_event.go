@@ -32,7 +32,7 @@ func UpdateEvent(c *gin.Context) {
 	}
 
 	id := c.Param("id")
-	_, err := repository.GetEventById(id)
+	event, err := repository.GetEventById(id)
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{
 			"message": "Event not found",
@@ -91,6 +91,7 @@ func UpdateEvent(c *gin.Context) {
 		Organizer:   body.Organizer,
 		DressCode:   body.DressCode,
 		AgeLimit:    body.AgeLimit,
+		Timestamps:  event.Timestamps,
 	}
 
 	_, err = repository.UpdateEvent(id, &updatedEvent)

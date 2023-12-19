@@ -16,5 +16,9 @@ type LoginRequest struct {
 }
 
 type UpdateUserRequest struct {
-	Username string `form:"username" binding:"required"`
+	Username string  `form:"username" binding:"required"`
+	Lat      float64 `form:"lat"`
+	Long     float64 `form:"long"`
+	// Example: sports,adventure
+	PreferenceCategories string `form:"preference_categories" binding:"required"`
 }

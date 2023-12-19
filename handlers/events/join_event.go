@@ -27,6 +27,11 @@ func JoinEvent(c *gin.Context) {
 		return
 	}
 
+	if int(event.Capacity) == len(event.Participants) {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "Event is full"})
+		return
+	}
+
 	tokenUser := c.MustGet("user").(models.TokenUser)
 	user, err := repository.GetUserById(tokenUser.ID)
 	if err != nil {

@@ -5,6 +5,7 @@ import (
 	payload "backend-go/payload/request"
 	"backend-go/repository"
 	"net/http"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 )
@@ -39,12 +40,31 @@ func UpdateUser(c *gin.Context) {
 		return
 	}
 
+	// Categories
+	categoryIds := []string{}
+	for _, category := range strings.Split(body.PreferenceCategories, ",") {
+		category, err := repository.GetCategoryByName(category)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"message": "Invalid category",
+			})
+			return
+		}
+		categoryIds = append(categoryIds, category.ID.Hex())
+	}
+
 	updatedUser := models.User{
-		ID:       user.ID,
-		Email:    user.Email,
-		Password: user.Password,
+		ID:              user.ID,
+		Email:           user.Email,
+		Password:        user.Password,
+		JoinedEvent:     user.JoinedEvent,
+		EventCategories: user.EventCategories,
+		Timestamps:      user.Timestamps,
 		// Changed
-		Username: body.Username,
+		Username:             body.Username,
+		Lat:                  body.Lat,
+		Long:                 body.Long,
+		PreferenceCategories: categoryIds,
 	}
 
 	_, err = repository.UpdateUser(tokenUser.ID, &updatedUser)
