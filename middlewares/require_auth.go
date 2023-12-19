@@ -23,7 +23,15 @@ func RequireAuth(c *gin.Context) {
 		return
 	}
 
-	tokenString = strings.Split(tokenString, "Bearer ")[1]
+	tmp := strings.Split(tokenString, "Bearer ")
+	if len(tmp) != 2 {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "Invalid token",
+		})
+		c.AbortWithStatus(http.StatusBadRequest)
+		return
+	}
+	tokenString = tmp[1]
 
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
@@ -52,8 +60,7 @@ func RequireAuth(c *gin.Context) {
 			return
 		}
 
-		var tokenUser models.TokenUser
-		tokenUser = models.TokenUser{
+		tokenUser := models.TokenUser{
 			ID:       claims["id"].(string),
 			Username: user.Username,
 			Email:    user.Email,

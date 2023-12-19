@@ -432,6 +432,38 @@ const docTemplate = `{
                 }
             }
         },
+        "/events/reco": {
+            "get": {
+                "description": "Get recommended events",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "events"
+                ],
+                "summary": "Get recommended events",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "With the bearer started",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/payload.GetEventsResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/events/{id}": {
             "get": {
                 "description": "Get an event by ID",
@@ -833,6 +865,23 @@ const docTemplate = `{
                         "required": true
                     },
                     {
+                        "type": "number",
+                        "name": "lat",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "number",
+                        "name": "long",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Example: sports,adventure",
+                        "name": "preference_categories",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
                         "type": "string",
                         "name": "username",
                         "in": "formData",
@@ -970,6 +1019,9 @@ const docTemplate = `{
         "models.Review": {
             "type": "object",
             "properties": {
+                "category": {
+                    "type": "string"
+                },
                 "comment": {
                     "type": "string"
                 },
@@ -981,6 +1033,12 @@ const docTemplate = `{
                 },
                 "id": {
                     "type": "string"
+                },
+                "joined_event": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
                 },
                 "rating": {
                     "type": "integer"

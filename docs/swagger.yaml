@@ -58,6 +58,8 @@ definitions:
     type: object
   models.Review:
     properties:
+      category:
+        type: string
       comment:
         type: string
       created_at:
@@ -66,6 +68,10 @@ definitions:
         type: string
       id:
         type: string
+      joined_event:
+        items:
+          type: string
+        type: array
       rating:
         type: integer
       updated_at:
@@ -641,6 +647,27 @@ paths:
       summary: Get popular events
       tags:
       - events
+  /events/reco:
+    get:
+      consumes:
+      - application/json
+      description: Get recommended events
+      parameters:
+      - description: With the bearer started
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/payload.GetEventsResponse'
+      summary: Get recommended events
+      tags:
+      - events
   /reviews/{event_id}:
     get:
       consumes:
@@ -746,6 +773,17 @@ paths:
       - description: With the bearer started
         in: header
         name: Authorization
+        required: true
+        type: string
+      - in: formData
+        name: lat
+        type: number
+      - in: formData
+        name: long
+        type: number
+      - description: 'Example: sports,adventure'
+        in: formData
+        name: preference_categories
         required: true
         type: string
       - in: formData

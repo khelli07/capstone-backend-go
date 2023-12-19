@@ -40,7 +40,6 @@ func GetPopularEvents(c *gin.Context) {
 		return
 	}
 
-	// Create a map to store the unmarshalled data
 	var data map[string]interface{}
 	err = json.Unmarshal(body, &data)
 	if err != nil {

@@ -7,8 +7,8 @@ type User struct {
 	Username             string             `bson:"username" json:"username"`
 	Email                string             `bson:"email" json:"email"`
 	Password             string             `bson:"password" json:"-"`
-	Lat                  float64            `bson:"lat" json:"lat"`
-	Long                 float64            `bson:"long" json:"long"`
+	Lat                  float64            `bson:"lat,truncate" json:"lat"`
+	Long                 float64            `bson:"long,truncate" json:"long"`
 	JoinedEvent          []string           `bson:"joined_event" json:"joined_event"`
 	EventCategories      []string           `bson:"event_categories" json:"event_categories"`
 	PreferenceCategories []string           `bson:"preference_categories" json:"preference_categories"`

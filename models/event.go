@@ -12,7 +12,7 @@ type Event struct {
 	EndTime     time.Time          `bson:"end_time" json:"end_time"`
 	Name        string             `bson:"name" json:"name"`
 	Description string             `bson:"description" json:"description"`
-	Price       float32            `bson:"price" json:"price"`
+	Price       float64            `bson:"price" json:"price"`
 	Capacity    int32              `bson:"capacity" json:"capacity"`
 	ImageURL    string             `bson:"image_url" json:"image_url"`
 	IsOnline    bool               `bson:"is_online" json:"is_online"`
