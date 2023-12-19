@@ -19,6 +19,9 @@ v2.1.0
 v2.2.0 
 - Made adjustments to user and event schema
 - ML Service Integration (awaiting response)
+
+v2.3.0 
+- Finish ML service integration
 ```
 
 ## Developers
